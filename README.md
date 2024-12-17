@@ -1,2 +1,3 @@
 # projet-boxmulti
-INF224 project
+
+Source code for the INF224 set-top box multimedia project.
