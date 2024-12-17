@@ -31,6 +31,10 @@ std::string Base::getFileName() const{
 }
 
 void Base::printValues(std::ostream &out) const{
-    out << "Name: " << name << '\n';
-    out << "Filename: " << filename << '\n';
+    out << "Nom : " << name << '\n';
+    out << "Nom du fichier : " << filename << '\n';
+}
+
+void Base::play() const{
+    
 }

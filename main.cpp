@@ -3,7 +3,9 @@
 // Created on 21/10/2018
 //
 
-#include "Base.h"
+#include "Photo.hpp"
+#include "Video.hpp"
+
 using namespace std;
 
 int main(int argc, const char* argv[])
@@ -15,11 +17,17 @@ int main(int argc, const char* argv[])
     std::cout << "Name: " << hello->getName() << std::endl;
     hello->setName("coucou");
     std::cout << "New Name: " << hello->getName() << std::endl;
+    delete hello;
 
     Base *boomboom = new Base("explosion", "boumboum.txt");
     boomboom->printValues(std::cout);
     boomboom->setName("boomboom");
     boomboom->setFileName("explosion.txt");
     boomboom->printValues(std::cout);
+    delete boomboom;
+
+    Photo *photo = new Photo("photo", "photo.jpeg", 3.55222, 4.77777);
+    photo->printValues(std::cout);
+
     return 0;
 }
