@@ -10,7 +10,7 @@ class Base{
     public:
         Base();
         Base(std::string name, std::string filename);
-        ~Base();
+        virtual ~Base();
         void setName(std::string);
         void setFileName(std::string);
         std::string getName() const;

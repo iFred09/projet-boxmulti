@@ -40,7 +40,7 @@ class Photo : public Base {
         }
 
         void play() const override{
-            std::string arg = "mpv " + this->getFileName() + " &";
+            std::string arg = "imagej " + this->getFileName() + " &";
             const char* argconv = arg.data();
             system(argconv);
         }

@@ -29,7 +29,7 @@ class Video : public Base{
         }
 
         void play() const override{
-            std::string arg = "imagej " + this->getFileName() + " &";
+            std::string arg = "mpv " + this->getFileName() + " &";
             const char* argconv = arg.data();
             system(argconv);
         }
