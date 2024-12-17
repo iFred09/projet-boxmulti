@@ -1,3 +1,6 @@
+#ifndef base_h
+#define base_h
+
 #include <iostream>
 #include <string>
 
@@ -14,3 +17,5 @@ class Base{
         std::string getFileName() const;
         void printValues(std::ostream &out) const;
 };
+
+#endif
