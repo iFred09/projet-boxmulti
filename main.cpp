@@ -7,6 +7,7 @@
 #include "Video.hpp"
 #include "Film.h"
 #include <random>
+#include <ctime>
 
 using namespace std;
 
