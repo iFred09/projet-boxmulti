@@ -5,6 +5,7 @@
 
 #include "Photo.hpp"
 #include "Video.hpp"
+#include "Film.h"
 #include <random>
 
 using namespace std;
@@ -49,6 +50,21 @@ int main(int argc, const char* argv[])
     for(int i=0 ; i<3 ; i++){
         delete tabMedias[i];
     }
+
+    Film *film = new Film("film1", "film1.mp4", 5555);
+    int chapitres[15];
+
+    std::mt19937 gen(std::time(0)); // Mersenne Twister 19937 générateur
+    std::uniform_int_distribution<> dis(1, 100); // Nombres entiers entre 1 et 100
+    // génère 15 nombres aléatoires entre 1 et 100
+    for(int i=0 ; i<15 ; i++){
+        chapitres[i] = dis(gen);
+    }
+    film->setChapitres(chapitres, 15);
+    cout << "Film " << film->getName() << " : contient " << film->getNbChapitres() << " chapitres" << std::endl;
+    film->printValues(cout);
+
+    delete film;
 
     return 0;
 }
