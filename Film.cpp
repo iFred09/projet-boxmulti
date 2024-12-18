@@ -22,7 +22,7 @@ void Film::setChapitres(int* chapitres, int nbChapitres){
     if (this->chapitres){
         delete[] this->chapitres;
     }
-    this->chapitres = (int*) malloc(nbChapitres * sizeof(int));
+    this->chapitres = new int[nbChapitres];
     for (int i=0 ; i<nbChapitres ; i++){
         this->chapitres[i] = chapitres[i];
     }
