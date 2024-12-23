@@ -34,7 +34,3 @@ void Base::printValues(std::ostream &out) const{
     out << "Nom : " << name << '\n';
     out << "Nom du fichier : " << filename << '\n';
 }
-
-void Base::play() const{
-    
-}

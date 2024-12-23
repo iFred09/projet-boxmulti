@@ -16,7 +16,7 @@ class Base{
         std::string getName() const;
         std::string getFileName() const;
         virtual void printValues(std::ostream &out) const;
-        virtual void play() const;
+        virtual void play() const = 0;
 };
 
 #endif
