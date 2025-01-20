@@ -6,6 +6,7 @@
 #include "Photo.hpp"
 #include "Video.hpp"
 #include "Film.h"
+#include "Groupe.h"
 #include <random>
 #include <ctime>
 
@@ -66,6 +67,29 @@ int main(int argc, const char* argv[])
     film->printValues(cout);
 
     delete film;
+
+    Photo* photo1 = new Photo("Vacances", "vacances.jpg", 43.5, 7.0);
+    Video* video1 = new Video("Film", "film.mp4", 120);
+    Film* film1 = new Film("Documentaire", "doc.mp4", 90);
+
+    Groupe groupeVacances("Vacances");
+    groupeVacances.push_back(photo1);
+    groupeVacances.push_back(video1);
+
+    Groupe groupeFilms("Films");
+    groupeFilms.push_back(video1);
+    groupeFilms.push_back(film1);
+
+    std::cout << "Affichage du groupe Vacances :" << std::endl;
+    groupeVacances.printValues(std::cout);
+
+    std::cout << "\nAffichage du groupe Films :" << std::endl;
+    groupeFilms.printValues(std::cout);
+
+    // N'oubliez pas de libérer la mémoire
+    delete photo1;
+    delete video1;
+    delete film1;
 
     return 0;
 }
