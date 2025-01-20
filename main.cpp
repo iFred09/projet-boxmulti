@@ -7,6 +7,7 @@
 #include "Video.hpp"
 #include "Film.h"
 #include "Groupe.h"
+#include "Gestionnaire.h"
 #include <random>
 #include <ctime>
 
@@ -85,6 +86,20 @@ int main(int argc, const char* argv[])
 
     std::cout << "\nAffichage du groupe Films :" << std::endl;
     groupeFilms.printValues(std::cout);
+
+    // etape 10
+
+    Gestionnaire gestionnaire;
+    std::shared_ptr<Photo> photo = gestionnaire.createPhoto("Vacances", "vacances.jpg", 43.5, 7.0);
+    std::shared_ptr<Video> video = gestionnaire.createVideo("Film", "film.mp4", 120);
+    std::shared_ptr<Groupe> groupe = gestionnaire.createGroupe("Vacances");
+
+    groupe->push_back(photo);
+    groupe->push_back(video);
+
+    gestionnaire.showObjetsMultimedia("Vacances");
+    gestionnaire.showGroupes("Vacances");
+    gestionnaire.playObjetMultimedia("Vacances");
 
     return 0;
 }
