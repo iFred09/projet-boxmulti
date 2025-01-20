@@ -12,7 +12,7 @@ class Video : public Base{
         }
 
         ~Video(){
-
+            std::cout << "Destruction de la vidéo " << this->getName() << std::endl;
         }
 
         int getDuration() const{

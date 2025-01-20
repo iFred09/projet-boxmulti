@@ -4,7 +4,7 @@
 #include "Base.h"
 #include <list>
 
-class Groupe : public std::list<Base*>{
+class Groupe : public std::list<std::shared_ptr<Base>>{
     private:
         std::string name;
     public:

@@ -14,7 +14,7 @@ std::string Groupe::getName() const{
 
 void Groupe::printValues(std::ostream &out) const{
     out << "Groupe " << name << " : \n";
-    for(const Base* b : *this){
+    for(const std::shared_ptr<Base>& b : *this){
         b->printValues(out);
     }
 }

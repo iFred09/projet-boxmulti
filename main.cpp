@@ -68,28 +68,23 @@ int main(int argc, const char* argv[])
 
     delete film;
 
-    Photo* photo1 = new Photo("Vacances", "vacances.jpg", 43.5, 7.0);
-    Video* video1 = new Video("Film", "film.mp4", 120);
-    Film* film1 = new Film("Documentaire", "doc.mp4", 90);
+    std::shared_ptr<Photo> photo1 = std::make_shared<Photo>("Vacances", "vacances.jpg", 43.5, 7.0);
+    std::shared_ptr<Photo> photo2 = std::make_shared<Photo>("Vacances2", "vacances2.jpg", 45.3, 2.0);
+    std::shared_ptr<Video> video1 = std::make_shared<Video>("Film", "film.mp4", 120);
 
     Groupe groupeVacances("Vacances");
     groupeVacances.push_back(photo1);
-    groupeVacances.push_back(video1);
+    groupeVacances.push_back(photo2);
 
     Groupe groupeFilms("Films");
     groupeFilms.push_back(video1);
-    groupeFilms.push_back(film1);
+    groupeFilms.push_back(photo1);
 
     std::cout << "Affichage du groupe Vacances :" << std::endl;
     groupeVacances.printValues(std::cout);
 
     std::cout << "\nAffichage du groupe Films :" << std::endl;
     groupeFilms.printValues(std::cout);
-
-    // N'oubliez pas de libérer la mémoire
-    delete photo1;
-    delete video1;
-    delete film1;
 
     return 0;
 }

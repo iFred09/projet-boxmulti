@@ -14,7 +14,7 @@ class Photo : public Base {
             }
 
         ~Photo(){
-
+            std::cout << "Destruction de la photo " << this->getName() << std::endl;
         }
         
         double getLatitude() const{
