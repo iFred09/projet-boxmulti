@@ -89,6 +89,8 @@ int main(int argc, const char* argv[])
 
     // etape 10
 
+    std::cout << "Début du test gestionnaire" << std::endl;
+
     Gestionnaire gestionnaire;
     std::shared_ptr<Photo> photo = gestionnaire.createPhoto("Vacances", "vacances.jpg", 43.5, 7.0);
     std::shared_ptr<Video> video = gestionnaire.createVideo("Film", "film.mp4", 120);
@@ -99,7 +101,6 @@ int main(int argc, const char* argv[])
 
     gestionnaire.showObjetsMultimedia("Vacances");
     gestionnaire.showGroupes("Vacances");
-    gestionnaire.playObjetMultimedia("Vacances");
 
     return 0;
 }
