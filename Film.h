@@ -9,6 +9,7 @@ class Film : public Video{
         int nbChapitres;
     public:
         Film(const std::string name = "", const std::string filename = "", int duration = 0);
+        Film(const Film&);
         ~Film();
         int* getChapitres() const;
         int getNbChapitres() const;

@@ -5,6 +5,14 @@ Film::Film(const std::string name, const std::string filename, int duration)
 
         }
 
+Film::Film(const Film& film)
+        :Video(film), chapitres(nullptr), nbChapitres(film.nbChapitres){
+    if (nbChapitres > 0){
+        chapitres = new int[nbChapitres];
+        std::memcpy(chapitres, film.chapitres, nbChapitres*sizeof(int));
+    }
+}
+
 Film::~Film(){
     delete[] chapitres;
 }
@@ -23,9 +31,7 @@ void Film::setChapitres(int* chapitres, int nbChapitres){
         delete[] this->chapitres;
     }
     this->chapitres = new int[nbChapitres];
-    for (int i=0 ; i<nbChapitres ; i++){
-        this->chapitres[i] = chapitres[i];
-    }
+    std::memcpy(this->chapitres, chapitres, nbChapitres*sizeof(int));
 }
 
 void Film::printValues(std::ostream &out) const{
