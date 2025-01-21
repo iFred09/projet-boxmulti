@@ -8,10 +8,16 @@
 #include "Film.h"
 #include "Groupe.h"
 #include "Gestionnaire.h"
+#include "tcpserver.h"
 #include <random>
 #include <ctime>
+#include <memory>
+#include <sstream>
 
 using namespace std;
+
+// #define AVANT_ETAPE11
+#ifdef AVANT_ETAPE11
 
 int main(int argc, const char* argv[])
 {
@@ -99,8 +105,71 @@ int main(int argc, const char* argv[])
     groupe->push_back(photo);
     groupe->push_back(video);
 
-    gestionnaire.showObjetsMultimedia("Vacances");
-    gestionnaire.showGroupes("Vacances");
+    gestionnaire.showObjetsMultimedia("Vacances", std::cout);
+    gestionnaire.showGroupes("Vacances", std::cout);
 
     return 0;
 }
+
+#else
+
+const int PORT = 3331;
+
+int main(int argc, const char* argv[]){
+    Gestionnaire db;
+    std::shared_ptr<Photo> photo = db.createPhoto("Paris", "paris.jpg", 43.5, 7.0);
+    std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.jpg", 99.9, 2.0);
+    std::shared_ptr<Video> video = db.createVideo("Film", "film.mp4", 120);
+    std::shared_ptr<Groupe> groupe = db.createGroupe("Vacances");
+
+    groupe->push_back(photo);
+    groupe->push_back(video);
+    
+    // creation TCPServer
+
+    auto* server =
+    new TCPServer( [&](std::string const& request, std::string& response) {
+
+    // the request sent by the client to the server
+    std::cout << "request: " << request << std::endl;
+
+    // processing request
+
+    std::stringstream ss(request);
+    std::string command;
+    std::string argument;
+
+    ss >> command >> argument;
+
+    std::cout << "searching for " << argument << std::endl;
+    std::stringstream output;
+    if (command == "show"){
+        output << "Recherche de " << argument << " : " << ";";
+        db.showGroupes(argument, output);
+        db.showObjetsMultimedia(argument, output);
+        std::string outputStr = output.str();
+        std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
+        response = outputStr;
+    } else if (command == "play"){
+        output << "Recherche de " << argument << " : " << ";";
+        db.playObjetMultimedia(argument, output);
+        response = output.str();
+    } else {
+        response = "unknown command";
+    }
+
+    // return false would close the connecytion with the client
+    return true;
+    });
+    std::cout << "Starting Server on port " << PORT << std::endl;
+
+    int status = server->run(PORT);
+
+    // en cas d'erreur
+    if (status < 0) {
+        std::cerr << "Could not start Server on port " << PORT << std::endl;
+        return 1;
+    }
+}
+
+#endif

@@ -18,10 +18,10 @@ class Gestionnaire{
         std::shared_ptr<Film> createFilm(const std::string name, const std::string filename, const int duration);
         std::shared_ptr<Groupe> createGroupe(const std::string name);
 
-        void showObjetsMultimedia(const std::string) const;
-        void showGroupes(const std::string) const;
+        void showObjetsMultimedia(const std::string name, std::ostream& out) const;
+        void showGroupes(const std::string name, std::ostream& out) const;
 
-        void playObjetMultimedia(const std::string) const;
+        void playObjetMultimedia(const std::string name, std::ostream& out) const;
 };
 
 #endif

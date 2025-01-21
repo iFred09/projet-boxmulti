@@ -24,23 +24,34 @@ std::shared_ptr<Groupe> Gestionnaire::createGroupe(const std::string name){
     return groupe;
 }
 
-void Gestionnaire::showObjetsMultimedia(const std::string name) const{
+void Gestionnaire::showObjetsMultimedia(const std::string name, std::ostream &out) const{
     auto it = objetsMultimedia.find(name);
     if (it != objetsMultimedia.end()){
-        it->second->printValues(std::cout);
+        out << "Objet multimédia " << name << " : " << std::endl;
+        it->second->printValues(out);
+    }
+    else{
+        out << "Objet multimédia " << name << " non trouvé" << std::endl;
     }
 }
 
-void Gestionnaire::showGroupes(const std::string name) const{
+void Gestionnaire::showGroupes(const std::string name, std::ostream &out) const{
     auto it = groupes.find(name);
     if (it != groupes.end()){
-        it->second->printValues(std::cout);
+        out << "Groupe " << name << " : \n";
+        it->second->printValues(out);
+    }
+    else{
+        out << "Groupe " << name << " non trouvé" << std::endl;
     }
 }
 
-void Gestionnaire::playObjetMultimedia(const std::string name) const{
+void Gestionnaire::playObjetMultimedia(const std::string name, std::ostream &out) const{
     auto it = objetsMultimedia.find(name);
     if (it != objetsMultimedia.end()){
         it->second->play();
+    }
+    else{
+        out << "Objet multimédia " << name << " non trouvé" << std::endl;
     }
 }
