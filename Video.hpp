@@ -7,7 +7,10 @@ class Video : public Base{
     private:
         int duration;
     public:
-        Video(const std::string name = "", const std::string filename = "", int duration = 0)
+        Video():Base(){
+            this->duration = 0;
+        }
+        Video(const std::string name, const std::string filename, int duration)
             :Base(name, filename), duration(duration){
         }
 

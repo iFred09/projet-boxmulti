@@ -8,7 +8,11 @@ class Photo : public Base {
         double latitude;
         double longitude;
     public:
-        Photo(const std::string name = "", const std::string filename = "", const double latitude = 0, const double longitude = 0)
+        Photo():Base(){
+            this->latitude = 0;
+            this->longitude = 0;
+        }
+        Photo(const std::string name, const std::string filename, const double latitude, const double longitude)
             :Base(name, filename), latitude(latitude), longitude(longitude){
 
             }

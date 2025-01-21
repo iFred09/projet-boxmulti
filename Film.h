@@ -5,15 +5,16 @@
 
 class Film : public Video{
     private:
-        int* chapitres;
-        int nbChapitres;
+        int* chapitres{};
+        int nbChapitres{};
     public:
-        Film(const std::string name = "", const std::string filename = "", int duration = 0);
-        Film(const Film&);
+        Film();
+        Film(const std::string name, const std::string filename, int duration);
+        Film(const Film& film);
         ~Film();
-        int* getChapitres() const;
+        const int* getChapitres() const;
         int getNbChapitres() const;
-        void setChapitres(int*, int);
+        void setChapitres(const int* chapitres, int nbChapitres);
         void printValues(std::ostream&) const override;
 };
 
