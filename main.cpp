@@ -9,9 +9,11 @@
 #include "Groupe.h"
 #include "Gestionnaire.h"
 #include "tcpserver.h"
+#include <algorithm>
 #include <random>
 #include <ctime>
 #include <memory>
+#include <string>
 #include <sstream>
 
 using namespace std;

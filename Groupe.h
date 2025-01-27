@@ -14,6 +14,7 @@
 
 #include "Base.h"
 #include <list>
+#include <memory>
 
 /**
  * @brief Classe pour les groupes d'objets multimédias
