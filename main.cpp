@@ -16,37 +16,44 @@
 
 using namespace std;
 
-// #define AVANT_ETAPE11
-#ifdef AVANT_ETAPE11
+#ifdef AVANT_ETAPE5
 
 int main(int argc, const char* argv[])
 {
     std::cout << "Hello brave new world" << std::endl;
 
-    // Base *hello = new Base("hello", "hello.txt");
-    // hello->printValues(std::cout);
-    // std::cout << "Name: " << hello->getName() << std::endl;
-    // hello->setName("coucou");
-    // std::cout << "New Name: " << hello->getName() << std::endl;
-    // delete hello;
+    Base *hello = new Base("hello", "hello.txt");
+    hello->printValues(std::cout);
+    std::cout << "Name: " << hello->getName() << std::endl;
+    hello->setName("coucou");
+    std::cout << "New Name: " << hello->getName() << std::endl;
+    delete hello;
 
-    // Base *boomboom = new Base("explosion", "boumboum.txt");
-    // boomboom->printValues(std::cout);
-    // boomboom->setName("boomboom");
-    // boomboom->setFileName("explosion.txt");
-    // boomboom->printValues(std::cout);
-    // delete boomboom;
+    Base *boomboom = new Base("explosion", "boumboum.txt");
+    boomboom->printValues(std::cout);
+    boomboom->setName("boomboom");
+    boomboom->setFileName("explosion.txt");
+    boomboom->printValues(std::cout);
+    delete boomboom;
 
-    // Photo *photo = new Photo("photo", "photo.jpg", 3.55222, 4.77777);
-    // photo->printValues(std::cout);
-    // photo->play();
-    // delete photo;
+    Photo *photo = new Photo("photo", "photo.jpg", 3.55222, 4.77777);
+    photo->printValues(std::cout);
+    photo->play();
+    delete photo;
 
-    // Video *video = new Video("video", "video.mov", 5555);
-    // video->printValues(std::cout);
-    // video->play();
-    // delete video;
+    Video *video = new Video("video", "video.mov", 5555);
+    video->printValues(std::cout);
+    video->play();
+    delete video;
 
+}
+
+#endif
+
+#ifdef ETAPE_5_10
+
+int main(int argc, const char* argv[])
+{
     Base *tabMedias[3];
     tabMedias[0] = new Video("video", "video.mov", 5555);
     tabMedias[1] = new Photo("photo", "photo.jpg", 3.55222, 4.77777);
@@ -93,13 +100,19 @@ int main(int argc, const char* argv[])
     std::cout << "\nAffichage du groupe Films :" << std::endl;
     groupeFilms.printValues(std::cout);
 
-    // etape 10
+    return 0;
+}
+#endif
 
+// #define ETAPE_10
+#ifdef ETAPE_10
+
+int main(int argc, const char* argv[]){
     std::cout << "Début du test gestionnaire" << std::endl;
 
     Gestionnaire gestionnaire;
     std::shared_ptr<Photo> photo = gestionnaire.createPhoto("Vacances", "vacances.jpg", 43.5, 7.0);
-    std::shared_ptr<Video> video = gestionnaire.createVideo("Film", "film.mp4", 120);
+    std::shared_ptr<Video> video = gestionnaire.createVideo("Video", "film.mp4", 120);
     std::shared_ptr<Groupe> groupe = gestionnaire.createGroupe("Vacances");
 
     groupe->push_back(photo);
@@ -111,7 +124,10 @@ int main(int argc, const char* argv[])
     return 0;
 }
 
-#else
+#endif
+
+#define ETAPE_11
+#ifdef ETAPE_11
 
 const int PORT = 3331;
 
