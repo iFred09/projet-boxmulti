@@ -1,7 +1,0 @@
-main.o: main.cpp Photo.hpp Base.h Video.hpp Film.h Groupe.h \
-  Gestionnaire.h
-Base.o: Base.cpp Base.h
-Film.o: Film.cpp Film.h Video.hpp Base.h
-Groupe.o: Groupe.cpp Groupe.h Base.h
-Gestionnaire.o: Gestionnaire.cpp Gestionnaire.h Base.h Photo.hpp \
-  Video.hpp Film.h Groupe.h
