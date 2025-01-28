@@ -3,23 +3,29 @@
 #  Exemple de Makefile
 #  Eric Lecolinet - Reda Dehak - Telecom ParisTech 2015
 #  INF224 - TP C++ - http://www.telecom-paristech.fr/~elc/inf224
+#  Modifié par Frédéric SRICHANWIT - 2025
 #
 ##########################################
 
 #
 # Nom du programme
 #
-PROG = myprog
+SERVER = server
+CLIENT = client
+CLISERV = cliserv
 
 #
 # Fichiers sources (NE PAS METTRE les .h ni les .o seulement les .cpp)
 #
-SOURCES = main.cpp Base.cpp Film.cpp Groupe.cpp Gestionnaire.cpp tcpserver.cpp ccsocket.cpp
+SERVER_SOURCES = main.cpp Base.cpp Film.cpp Groupe.cpp Gestionnaire.cpp tcpserver.cpp ccsocket.cpp
+CLIENT_SOURCES = client.cpp ccsocket.cpp
+CLISERV_SOURCES = ${SERVER_SOURCES} ${CLIENT_SOURCES} Makefile
 
 #
 # Fichiers objets (ne pas modifier sauf si l'extension n'est pas .cpp)
 #
-OBJETS = ${SOURCES:%.cpp=%.o}
+SERVER_OBJETS = ${SERVER_SOURCES:%.cpp=%.o}
+CLIENT_OBJETS = ${CLIENT_SOURCES:%.cpp=%.o}
 
 #
 # Compilateur C++
@@ -52,28 +58,37 @@ LDLIBS =
 # depend-${PROG} sera un fichier contenant les dependances
 #
  
-all: ${PROG}
+all: ${SERVER} ${CLIENT}
 
-run: ${PROG}
-	./${PROG}
+run-${SERVER}: ${SERVER}
+	./${SERVER}
 
-${PROG}: depend-${PROG} ${OBJETS}
-	${CXX} -o $@ ${CXXFLAGS} ${LDFLAGS} ${OBJETS} ${LDLIBS}
+run-${CLIENT}: ${CLIENT}
+	./${CLIENT}
+
+${SERVER}: depend-${SERVER} ${SERVER_OBJETS}
+	${CXX} -o $@ ${CXXFLAGS} ${LDFLAGS} ${SERVER_OBJETS} ${LDLIBS}
+
+${CLIENT}: depend-${CLIENT} ${CLIENT_OBJETS}
+	${CXX} -o $@ ${CXXFLAGS} ${LDFLAGS} ${CLIENT_OBJETS} ${LDLIBS}
 
 clean:
-	-@$(RM) *.o depend-${PROG} core 1>/dev/null 2>&1
+	-@$(RM) *.o depend-${CLIENT} depend-${SERVER} core 1>/dev/null 2>&1
 
 clean-all: clean
-	-@$(RM) ${PROG} 1>/dev/null 2>&1
+	-@$(RM) ${CLIENT} ${SERVER} 1>/dev/null 2>&1
   
 tar:
-	tar cvf ${PROG}.tar.gz ${SOURCES}
+	tar cvf ${CLISERV}.tar.gz ${CLISERV_SOURCES}
 
 # Gestion des dependances : creation automatique des dependances en utilisant 
 # l'option -MM de g++ (attention tous les compilateurs n'ont pas cette option)
 #
-depend-${PROG}:
-	${CXX} ${CXXFLAGS} -MM ${SOURCES} > depend-${PROG}
+depend-${CLIENT}:
+	${CXX} ${CXXFLAGS} -MM ${CLIENT_SOURCES} > depend-${CLIENT}
+
+depend-${SERVER}:
+	${CXX} ${CXXFLAGS} -MM ${SERVER_SOURCES} > depend-${SERVER}
 
 
 ###########################################
@@ -97,4 +112,5 @@ depend-${PROG}:
 #
 # Inclusion du fichier des dependances
 #
--include depend-${PROG}
+-include depend-${CLIENT}
+-include depend-${SERVER}
