@@ -20,10 +20,10 @@
  */
 
 class Photo : public Base {
+    friend class Gestionnaire;
     private:
         double latitude;    // Latitude de la photo
         double longitude;
-    public:
         /**
          * @brief Constructeur par défaut de la classe Photo
          * 
@@ -35,6 +35,11 @@ class Photo : public Base {
             this->latitude = 0;
             this->longitude = 0;
         }
+
+        Photo(const std::string name, const std::string filename)
+            :Base(name, filename), latitude(0), longitude(0){
+
+            }
 
         /**
          * @brief Constructeur de la classe Photo avec paramètres
@@ -51,7 +56,7 @@ class Photo : public Base {
             :Base(name, filename), latitude(latitude), longitude(longitude){
 
             }
-
+    public:
         /**
          * @brief Destructeur pour la classe Photo
          * 
@@ -134,19 +139,12 @@ class Photo : public Base {
          * @param filename Nom du fichier de sauvegarde
          */
 
-        void serialize(std::string filename) const override{
-            std::ofstream file(filename);
-            if(file.is_open()){
-                file << "Photo" << std::endl;
-                file << this->getName() << std::endl;
-                file << this->getFileName() << std::endl;
-                file << this->latitude << std::endl;
-                file << this->longitude << std::endl;
-                file.close();
-            }
-            else{
-                std::cerr << "Impossible d'ouvrir le fichier " << filename << std::endl;
-            }
+        void serialize(std::ofstream &out) const override{
+            out << "Photo" << std::endl;
+            out << this->getName() << std::endl;
+            out << this->getFileName() << std::endl;
+            out << this->latitude << std::endl;
+            out << this->longitude << std::endl;
         }
 
         /**
@@ -157,26 +155,19 @@ class Photo : public Base {
          * @param filename Nom du fichier à charger
          */
 
-        void load(std::string filename) override{
-            std::ifstream file(filename);
-            if(file.is_open()){
-                std::string name;
-                std::string filename;
-                double latitude;
-                double longitude;
-                file >> name;
-                file >> filename;
-                file >> latitude;
-                file >> longitude;
-                this->setName(name);
-                this->setFileName(filename);
-                this->setLatitude(latitude);
-                this->setLongitude(longitude);
-                file.close();
-            }
-            else{
-                std::cerr << "Impossible d'ouvrir le fichier " << filename << std::endl;
-            }
+        void load(std::ifstream &in) override{
+            std::string name;
+            std::string filename;
+            double latitude;
+            double longitude;
+            in >> name;
+            in >> filename;
+            in >> latitude;
+            in >> longitude;
+            this->setName(name);
+            this->setFileName(filename);
+            this->setLatitude(latitude);
+            this->setLongitude(longitude);
         }
 };
 

@@ -22,6 +22,11 @@ Film::Film()
 
         }
 
+Film::Film(const std::string name, const std::string filename)
+        :Video(name, filename), chapitres(nullptr), nbChapitres(0){
+
+        }
+
 /**
  * @brief Constructeur de la classe Film avec paramètres
  * 
@@ -35,6 +40,11 @@ Film::Film()
 Film::Film(const std::string name, const std::string filename, int duration)
         :Video(name, filename, duration), chapitres(nullptr), nbChapitres(0){
 
+        }
+
+Film::Film(const std::string name, const std::string filename, int duration, const int* chapitres, int nbChapitres)
+            :Video(name, filename, duration), chapitres(nullptr), nbChapitres(0){
+            setChapitres(chapitres, nbChapitres);
         }
 
 /**
@@ -86,11 +96,15 @@ const int Film::getNbChapitres() const{
  */
 
 void Film::setChapitres(const int* chapitres, int nbChapitres){
-    if (nbChapitres < 0) return;
+    if (this->chapitres == chapitres) return;
     delete[] this->chapitres;
+    if (nbChapitres <= 0 || chapitres == nullptr){
+        this->nbChapitres = 0;
+        this->chapitres = nullptr;
+        return;
+    }
     this->nbChapitres = nbChapitres;
     this->chapitres = new int[nbChapitres];
-    if (chapitres == nullptr) return;
     for (int i=0 ; i<nbChapitres ; i++){
         this->chapitres[i] = chapitres[i];
     }
@@ -117,18 +131,14 @@ void Film::printValues(std::ostream &out) const{
  * @param filename 
  */
 
-void Film::serialize(std::string filename) const{
-    std::ofstream file(filename);
-    if(file.is_open()){
-        file << "Film" << std::endl;
-        file << getName() << std::endl;
-        file << getFileName() << std::endl;
-        file << getDuration() << std::endl;
-        file << nbChapitres << std::endl;
-        for(int i=0 ; i<nbChapitres ; i++){
-            file << chapitres[i] << std::endl;
-        }
-        file.close();
+void Film::serialize(std::ofstream &out) const{
+    out << "Film" << std::endl;
+    out << getName() << std::endl;
+    out << getFileName() << std::endl;
+    out << getDuration() << std::endl;
+    out << nbChapitres << std::endl;
+    for(int i=0 ; i<nbChapitres ; i++){
+        out << chapitres[i] << std::endl;
     }
 }
 
@@ -140,28 +150,24 @@ void Film::serialize(std::string filename) const{
  * @param filename 
  */
 
-void Film::load(std::string filename){
-    std::ifstream file(filename);
-    if(file.is_open()){
-        std::string type;
-        std::getline(file, type);
-        std::string name;
-        std::getline(file, name);
-        std::string filename;
-        std::getline(file, filename);
-        int duration;
-        file >> duration;
-        int nbChapitres;
-        file >> nbChapitres;
-        int* chapitres = new int[nbChapitres];
-        for(int i=0 ; i<nbChapitres ; i++){
-            file >> chapitres[i];
-        }
-        setChapitres(chapitres, nbChapitres);
-        Video::setName(name);
-        Video::setFileName(filename);
-        Video::setDuration(duration);
-        delete[] chapitres;
-        file.close();
+void Film::load(std::ifstream &in){
+    std::string type;
+    std::getline(in, type);
+    std::string name;
+    std::getline(in, name);
+    std::string filename;
+    std::getline(in, filename);
+    int duration;
+    in >> duration;
+    int nbChapitres;
+    in >> nbChapitres;
+    int* chapitres = new int[nbChapitres];
+    for(int i=0 ; i<nbChapitres ; i++){
+        in >> chapitres[i];
     }
+    setChapitres(chapitres, nbChapitres);
+    Video::setName(name);
+    Video::setFileName(filename);
+    Video::setDuration(duration);
+    delete[] chapitres;
 }

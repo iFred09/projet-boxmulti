@@ -48,12 +48,21 @@ class Gestionnaire{
          * 
          * @param name Nom de la photo
          * @param filename Nom du fichier contenant la photo
+         * @return std::shared_ptr<Photo> Un pointeur intelligent vers la photo créée
+         */
+        std::shared_ptr<Photo> createPhoto(const std::string name, const std::string filename);
+        /**
+         * @brief Crée une photo et l'ajoute à la liste des objets multimédias
+         * 
+         * @param name Nom de la photo
+         * @param filename Nom du fichier contenant la photo
          * @param latitude Latitude de la photo
          * @param longitude Longitude de la photo
          * @return std::shared_ptr<Photo> Un pointeur intelligent vers la photo créée
          */
         std::shared_ptr<Photo> createPhoto(const std::string name, const std::string filename, const double latitude, const double longitude);
 
+        std::shared_ptr<Video> createVideo(const std::string name, const std::string filename);
         /**
          * @brief Crée une vidéo et l'ajoute à la liste des objets multimédias
          * 
@@ -64,6 +73,7 @@ class Gestionnaire{
          */
         std::shared_ptr<Video> createVideo(const std::string name, const std::string filename, const int duration);
 
+        std::shared_ptr<Film> createFilm(const std::string name, const std::string filename);
         /**
          * @brief Crée un film et l'ajoute à la liste des objets multimédias
          * 

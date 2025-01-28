@@ -20,15 +20,25 @@
  */
 
 class Film : public Video{
+    friend class Gestionnaire;
     private:
         int* chapitres{};   // Tableau des chapitres du film
         int nbChapitres{};  // Nombre de chapitres du film
-    public:
         /**
          * @brief Constructeur par défaut de la classe Film
          * 
          */
         Film();
+
+        /**
+         * @brief Constructeur de la classe Film avec paramètres
+         * 
+         * Constructeur avec arguments qui initialise un film avec un nom et un nom de fichier
+         * 
+         * @param name Nom du film
+         * @param filename Nom du fichier contenant le film
+         */
+        Film(const std::string name, const std::string filename);
 
         /**
          * @brief Constructeur de la classe Film avec paramètres
@@ -41,6 +51,19 @@ class Film : public Video{
          */
         Film(const std::string name, const std::string filename, int duration);
 
+        /**
+         * @brief Constructeur de la classe Film avec paramètres
+         * 
+         * Constructeur avec arguments qui initialise un film avec un nom, un nom de fichier, une durée, des chapitres et le nombre de chapitres
+         * 
+         * @param name Nom du film
+         * @param filename Nom du fichier contenant le film
+         * @param duration Durée du film
+         * @param chapitres Tableau des chapitres du film
+         * @param nbChapitres Nombre de chapitres du film
+         */
+        Film(const std::string name, const std::string filename, int duration, const int* chapitres, int nbChapitres);
+    public:
         /**
          * @brief Constructeur de copie de la classe Film
          * 
@@ -83,7 +106,7 @@ class Film : public Video{
          * 
          * @param out Flux de sortie
          */
-        void printValues(std::ostream&) const override;
+        void printValues(std::ostream& out) const override;
 
         /**
          * @brief Méthode pour écrire les données d'un film dans un fichier
@@ -92,7 +115,7 @@ class Film : public Video{
          * 
          * @param filename Nom du fichier de sauvegarde
          */
-        void serialize(std::string filename) const override;
+        void serialize(std::ofstream& out) const override;
 
         /**
          * @brief Méthode pour lire les données d'un film depuis un fichier
@@ -101,7 +124,7 @@ class Film : public Video{
          * 
          * @param filename Nom du fichier à charger
          */
-        void load(std::string filename) override;
+        void load(std::ifstream& in) override;
 };
 
 #endif

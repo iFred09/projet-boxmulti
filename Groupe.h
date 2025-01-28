@@ -22,9 +22,9 @@
  */
 
 class Groupe : public std::list<std::shared_ptr<Base>>{
+    friend class Gestionnaire;
     private:
         std::string name;   // Nom du groupe
-    public:
         /**
          * @brief Constructeur par défaut de la classe Groupe
          * 
@@ -39,7 +39,7 @@ class Groupe : public std::list<std::shared_ptr<Base>>{
          * @param name Nom du groupe
          */
         Groupe(std::string name);
-
+    public:
         /**
          * @brief Destructeur pour la classe Groupe
          * 

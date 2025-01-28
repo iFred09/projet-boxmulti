@@ -20,9 +20,10 @@
  */
 
 class Video : public Base{
+    friend class Film;
+    friend class Gestionnaire;
     private:
         int duration;    // Durée de la vidéo
-    public:
         /**
          * @brief Constructeur par défaut de la classe Video
          * 
@@ -32,6 +33,10 @@ class Video : public Base{
 
         Video():Base(){
             this->duration = 0;
+        }
+
+        Video(const std::string name, const std::string filename)
+            :Base(name, filename), duration(0){
         }
 
         /**
@@ -47,7 +52,7 @@ class Video : public Base{
         Video(const std::string name, const std::string filename, int duration)
             :Base(name, filename), duration(duration){
         }
-
+    public:
         /**
          * @brief Destructeur pour la classe Video
          * 
@@ -108,15 +113,11 @@ class Video : public Base{
          * @param filename Nom du fichier de sauvegarde
          */
 
-        void serialize(std::string filename) const override{
-            std::ofstream file(filename);
-            if (file.is_open()){
-                file << "Vidéo" << std::endl;
-                file << this->getName() << std::endl;
-                file << this->getFileName() << std::endl;
-                file << this->getDuration() << std::endl;
-                file.close();
-            }
+        void serialize(std::ofstream &out) const override{
+            out << "Vidéo" << std::endl;
+            out << this->getName() << std::endl;
+            out << this->getFileName() << std::endl;
+            out << this->getDuration() << std::endl;
         }
 
         /**
@@ -127,19 +128,17 @@ class Video : public Base{
          * @param filename Nom du fichier à charger
          */
 
-        void load(std::string filename) override{
-            std::ifstream file(filename);
-            if (file.is_open()){
-                std::string type;
-                std::string name;
-                std::string filename;
-                int duration;
-                file >> type >> name >> filename >> duration;
-                this->setName(name);
-                this->setFileName(filename);
-                this->setDuration(duration);
-                file.close();
-            }
+        void load(std::ifstream &in) override{
+            std::string type;
+            std::string name;
+            std::string filename;
+            int duration;
+            getline(in, name);
+            getline(in, filename);
+            in >> duration;
+            this->setName(name);
+            this->setFileName(filename);
+            this->setDuration(duration);
         }
 };
 

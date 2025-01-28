@@ -25,10 +25,11 @@
  */
 
 class Base{
+    friend class Gestionnaire;
     private:
         std::string name{}; // Nom de l'objet multimédia
         std::string filename{}; // Nom du fichier contenant l'objet multimédia
-    public:
+    protected:
         /**
          * @brief Constructeur par défaut de la classe Base
          * Initialise l'objet multimédia avec un nom vide et un nom de fichier vide
@@ -42,7 +43,7 @@ class Base{
          * @param filename Le nom du fichier contenant l'objet multimédia
          */
         Base(std::string name, std::string filename);
-
+    public:
         /**
          * @brief Destructeur pour la classe Base
          * 
@@ -91,7 +92,7 @@ class Base{
          * 
          * @param out Flux de sortie
          */
-        virtual void serialize(std::string filename) const = 0;
+        virtual void serialize(std::ofstream &out) const = 0;
         /**
          * @brief Méthode pour charger l'objet multimédia depuis un flux d'entrée
          * 
@@ -99,7 +100,7 @@ class Base{
          * 
          * @param in Flux d'entrée
          */
-        virtual void load(std::string filename) = 0;
+        virtual void load(std::ifstream &in) = 0;
 };
 
 #endif

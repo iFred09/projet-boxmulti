@@ -115,7 +115,7 @@ int main(int argc, const char* argv[]){
     Gestionnaire gestionnaire;
     std::shared_ptr<Photo> photo = gestionnaire.createPhoto("Vacances", "vacances.jpg", 43.5, 7.0);
     std::shared_ptr<Video> video = gestionnaire.createVideo("Video", "film.mp4", 120);
-    std::shared_ptr<Groupe> groupe = gestionnaire.createGroupe("Vacances");
+    std::shared_ptr<Groupe> groupe = gestionnaire.createGroupe("Vacances"); 
 
     groupe->push_back(photo);
     groupe->push_back(video);
@@ -128,7 +128,7 @@ int main(int argc, const char* argv[]){
 
 #endif
 
-#define ETAPE_11
+// #define ETAPE_11
 #ifdef ETAPE_11
 
 const int PORT = 3331;
@@ -188,6 +188,35 @@ int main(int argc, const char* argv[]){
         std::cerr << "Could not start Server on port " << PORT << std::endl;
         return 1;
     }
+}
+
+#endif
+
+#define ETAPE_12
+#ifdef ETAPE_12
+
+int main(int argc, const char* argv[]){
+    Gestionnaire db;
+    std::shared_ptr<Photo> photo = db.createPhoto("Paris", "paris.jpg", 43.5, 7.0);
+    std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.jpg", 99.9, 2.0);
+    std::shared_ptr<Video> video = db.createVideo("unfilm", "film.mp4", 120);
+    std::shared_ptr<Video> video2 = db.createVideo("unfilm2", "film2.mp4", 120);
+    std::shared_ptr<Groupe> groupe = db.createGroupe("Vacances");
+
+    groupe->push_back(photo);
+    groupe->push_back(video);
+
+    db.serialize("db.txt");
+
+    Gestionnaire db2;
+    db2.load("db.txt");
+    
+    db.showObjetsMultimedia("unfilm", std::cout);
+    db2.showObjetsMultimedia("unfilm", std::cout);
+    db2.showObjetsMultimedia("Paris", std::cout);
+    db2.showObjetsMultimedia("unfilm2", std::cout);
+
+    return 0;
 }
 
 #endif
