@@ -120,6 +120,8 @@ int main(int argc, const char* argv[]){
     groupe->push_back(photo);
     groupe->push_back(video);
 
+    std::shared_ptr<Photo> photo2 = new Photo();
+
     gestionnaire.showObjetsMultimedia("Vacances", std::cout);
     gestionnaire.showGroupes("Vacances", std::cout);
 
@@ -196,6 +198,8 @@ int main(int argc, const char* argv[]){
 #ifdef ETAPE_12
 
 int main(int argc, const char* argv[]){
+    const int PORT = 3331;
+
     Gestionnaire db;
     std::shared_ptr<Photo> photo = db.createPhoto("Paris", "paris.jpg", 43.5, 7.0);
     std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.jpg", 99.9, 2.0);
@@ -215,6 +219,59 @@ int main(int argc, const char* argv[]){
     db2.showObjetsMultimedia("unfilm", std::cout);
     db2.showObjetsMultimedia("Paris", std::cout);
     db2.showObjetsMultimedia("unfilm2", std::cout);
+
+    // creation TCPServer
+
+    auto* server =
+    new TCPServer( [&](std::string const& request, std::string& response) {
+
+    // the request sent by the client to the server
+    std::cout << "request: " << request << std::endl;
+
+    // processing request
+
+    std::stringstream ss(request);
+    std::string command;
+    std::string argument;
+
+    ss >> command >> argument;
+
+    std::stringstream output;
+    if (command == "afficher"){
+        output << "Recherche de " << argument << " : " << ";";
+        if (argument == "groupes"){
+            db2.showAllGroupes(output);
+        } 
+        else if (argument == "multimédias"){
+            db2.showAllObjetsMultimedia(output);
+        }
+        else{
+            db.showGroupes(argument, output);
+            db.showObjetsMultimedia(argument, output);
+        }
+        std::string outputStr = output.str();
+        std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
+        response = outputStr;
+    } else if (command == "jouer"){
+        output << "Recherche de " << argument << " : " << ";";
+        db.playObjetMultimedia(argument, output);
+        response = output.str();
+    } else {
+        response = "Erreur : Commande inconnue";
+    }
+
+    // return false would close the connecytion with the client
+    return true;
+    });
+    std::cout << "Starting Server on port " << PORT << std::endl;
+
+    int status = server->run(PORT);
+
+    // en cas d'erreur
+    if (status < 0) {
+        std::cerr << "Could not start Server on port " << PORT << std::endl;
+        return 1;
+    }
 
     return 0;
 }

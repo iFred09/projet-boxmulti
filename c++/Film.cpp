@@ -151,23 +151,9 @@ void Film::serialize(std::ofstream &out) const{
  */
 
 void Film::load(std::ifstream &in){
-    std::string type;
-    std::getline(in, type);
-    std::string name;
-    std::getline(in, name);
-    std::string filename;
-    std::getline(in, filename);
-    int duration;
-    in >> duration;
-    int nbChapitres;
     in >> nbChapitres;
-    int* chapitres = new int[nbChapitres];
+    chapitres = new int[nbChapitres];
     for(int i=0 ; i<nbChapitres ; i++){
         in >> chapitres[i];
     }
-    setChapitres(chapitres, nbChapitres);
-    Video::setName(name);
-    Video::setFileName(filename);
-    Video::setDuration(duration);
-    delete[] chapitres;
 }

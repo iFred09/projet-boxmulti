@@ -62,6 +62,13 @@ class Gestionnaire{
          */
         std::shared_ptr<Photo> createPhoto(const std::string name, const std::string filename, const double latitude, const double longitude);
 
+        /**
+         * @brief Crée une vidéo et l'ajoute à la liste des objets multimédias
+         * 
+         * @param name Nom de la vidéo
+         * @param filename Nom du fichier contenant la vidéo
+         * @return std::shared_ptr<Video> Un pointeur intelligent vers la vidéo créée
+         */
         std::shared_ptr<Video> createVideo(const std::string name, const std::string filename);
         /**
          * @brief Crée une vidéo et l'ajoute à la liste des objets multimédias
@@ -73,6 +80,13 @@ class Gestionnaire{
          */
         std::shared_ptr<Video> createVideo(const std::string name, const std::string filename, const int duration);
 
+        /**
+         * @brief Crée un film et l'ajoute à la liste des objets multimédias
+         * 
+         * @param name Nom du film
+         * @param filename Nom du fichier contenant le film
+         * @return std::shared_ptr<Film> Un pointeur intelligent vers le film créé
+         */
         std::shared_ptr<Film> createFilm(const std::string name, const std::string filename);
         /**
          * @brief Crée un film et l'ajoute à la liste des objets multimédias
@@ -134,6 +148,34 @@ class Gestionnaire{
          */
 
         void load(const std::string filename);
+
+        /**
+         * @brief Méthode pour afficher tous les objets multimédias
+         * 
+         * @param out Flux de sortie
+         */
+        void showAllObjetsMultimedia(std::ostream &out) const;
+
+        /**
+         * @brief Méthode pour afficher tous les groupes
+         * 
+         * @param out Flux de sortie
+         */
+        void showAllGroupes(std::ostream &out) const;
+
+        /**
+         * @brief Méthode pour supprimer un objet multimédia
+         * 
+         * @param name Nom de l'objet multimédia
+         */
+        void deleteObjetMultimedia(const std::string name);
+
+        /**
+         * @brief Méthode pour supprimer un groupe
+         * 
+         * @param name Nom du groupe
+         */
+        void deleteGroupe(const std::string name);
 };
 
 #endif

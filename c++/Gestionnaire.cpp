@@ -20,6 +20,9 @@
  */
 std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const std::string filename){
     // std::shared_ptr<Photo> photo = std::make_shared<Photo>(name, filename);
+    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+        return nullptr;
+    }
     std::shared_ptr<Photo> photo(new Photo(name, filename));
     objetsMultimedia[name] = photo;
     return photo;
@@ -243,25 +246,90 @@ void Gestionnaire::load(const std::string filename){
                 std::string name;
                 std::getline(file, type);
                 if(type == "Photo"){
-                    std::shared_ptr<Photo> photo = createPhoto("", "", 0.0, 0.0);
+                    std::shared_ptr<Photo> photo = createPhoto("","");
                     photo->load(file);
                     name = photo->getName();
                     objetsMultimedia[name] = photo;
                 }
                 else if(type == "Vidéo"){
-                    std::shared_ptr<Video> video = createVideo("", "", 0);
+                    std::shared_ptr<Video> video = createVideo("", "");
                     video->load(file);
                     name = video->getName();
                     objetsMultimedia[name] = video;
                 }
                 else if(type == "Film"){
-                    std::shared_ptr<Film> film = createFilm("", "", 0);
+                    std::shared_ptr<Film> film = createFilm("", "");
                     film->load(file);
                     name = film->getName();
                     objetsMultimedia[name] = film;
                 }
+                else{
+                    std::cerr << line << " : Type d'objet multimédia inconnu" << std::endl;
+                    file.close();
+                    return;
+                }
             }
         }
         file.close();
+    }
+}
+
+/**
+ * @brief Méthode pour afficher tous les objets multimédias
+ * 
+ * @param out Flux de sortie
+ */
+
+void Gestionnaire::showAllObjetsMultimedia(std::ostream &out) const{
+    if (objetsMultimedia.empty()){
+        out << "Pas d'objets multimédias dans le serveur" << std::endl;
+        return;
+    }
+    out << "Liste des objets multimédias : " << std::endl;
+    for(const auto& obj : objetsMultimedia){
+        obj.second->printValues(out);
+    }
+}
+
+/**
+ * @brief Méthode pour afficher tous les groupes
+ * 
+ * @param out Flux de sortie
+ */
+
+void Gestionnaire::showAllGroupes(std::ostream &out) const{
+    if (groupes.empty()){
+        out << "Pas de groupes dans le serveur" << std::endl;
+        return;
+    }
+    out << "Liste des groupes : " << std::endl;
+    for(const auto& groupe : groupes){
+        groupe.second->printValues(out);
+    }
+}
+
+/**
+ * @brief Méthode pour supprimer un objet multimédia
+ * 
+ * @param name Nom de l'objet multimédia
+ */
+
+void Gestionnaire::deleteObjetMultimedia(const std::string name){
+    auto multimedia = this->getObjetMultimedia(name);
+    if (multimedia){
+        objetsMultimedia.erase(name);
+    }
+}
+
+/**
+ * @brief Méthode pour supprimer un groupe
+ * 
+ * @param name Nom du groupe
+ */
+
+void Gestionnaire::deleteGroupe(const std::string name){
+    auto groupe = this->getGroupe(name);
+    if (groupe){
+        groupes.erase(name);
     }
 }
