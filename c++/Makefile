@@ -6,7 +6,7 @@
 #  Modifié par Frédéric SRICHANWIT - 2025
 #
 ##########################################
-
+.PHONY: clean clean-all
 #
 # Nom du programme
 #
@@ -112,5 +112,9 @@ depend-${SERVER}:
 #
 # Inclusion du fichier des dependances
 #
--include depend-${CLIENT}
--include depend-${SERVER}
+ifneq ($(MAKECMDGOALS),clean)
+ifneq ($(MAKECMDGOALS),clean-all)
+    -include depend-${CLIENT}
+    -include depend-${SERVER}
+endif
+endif
