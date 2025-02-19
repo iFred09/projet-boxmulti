@@ -201,24 +201,36 @@ int main(int argc, const char* argv[]){
     const int PORT = 3331;
 
     Gestionnaire db;
-    std::shared_ptr<Photo> photo = db.createPhoto("Paris", "paris.jpg", 43.5, 7.0);
-    std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.jpg", 99.9, 2.0);
-    std::shared_ptr<Video> video = db.createVideo("unfilm", "film.mp4", 120);
-    std::shared_ptr<Video> video2 = db.createVideo("unfilm2", "film2.mp4", 120);
-    std::shared_ptr<Groupe> groupe = db.createGroupe("Vacances");
+    try{
+        std::shared_ptr<Photo> photo = db.createPhoto("Paris", "paris.jpg", 43.5, 7.0);
+        std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.jpg", 99.9, 2.0);
+        std::shared_ptr<Video> video = db.createVideo("unfilm", "film.mp4", 120);
+        std::shared_ptr<Video> video2 = db.createVideo("unfilm2", "film2.mp4", 120);
+        std::shared_ptr<Groupe> groupe = db.createGroupe("Vacances");
 
-    groupe->push_back(photo);
-    groupe->push_back(video);
+        groupe->push_back(photo);
+        groupe->push_back(video);
 
-    db.serialize("db.txt");
+        db.serialize("db.txt");
 
-    Gestionnaire db2;
-    db2.load("db.txt");
-    
-    db.showObjetsMultimedia("unfilm", std::cout);
-    db2.showObjetsMultimedia("unfilm", std::cout);
-    db2.showObjetsMultimedia("Paris", std::cout);
-    db2.showObjetsMultimedia("unfilm2", std::cout);
+        Gestionnaire db2;
+        db2.load("db.txt");
+        
+        db2.showObjetsMultimedia("unfilm", std::cout);
+
+    }
+    catch (NomDejaUtiliseException e){
+        std::cerr << "Erreur : " << e.what() << std::endl;
+    }
+    catch (NullChapitresException e){
+        std::cerr << "Erreur : " << e.what() << std::endl;
+    }
+    catch (NombreChapitresException e){
+        std::cerr << "Erreur : " << e.what() << std::endl;
+    }
+    catch (std::exception e){
+        std::cerr << "Erreur inconnue : " << e.what() << std::endl;
+    }
 
     // creation TCPServer
 
@@ -240,10 +252,10 @@ int main(int argc, const char* argv[]){
     if (command == "afficher"){
         output << "Recherche de " << argument << " : " << ";";
         if (argument == "groupes"){
-            db2.showAllGroupes(output);
+            db.showAllGroupes(output);
         } 
         else if (argument == "multimédias"){
-            db2.showAllObjetsMultimedia(output);
+            db.showAllObjetsMultimedia(output);
         }
         else{
             db.showGroupes(argument, output);
