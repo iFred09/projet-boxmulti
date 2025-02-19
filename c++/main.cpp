@@ -219,16 +219,16 @@ int main(int argc, const char* argv[]){
         db2.showObjetsMultimedia("unfilm", std::cout);
 
     }
-    catch (NomDejaUtiliseException e){
+    catch (NomDejaUtiliseException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (NullChapitresException e){
+    catch (NullChapitresException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (NombreChapitresException e){
+    catch (NombreChapitresException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (std::exception e){
+    catch (std::exception& e){
         std::cerr << "Erreur inconnue : " << e.what() << std::endl;
     }
 
@@ -249,7 +249,7 @@ int main(int argc, const char* argv[]){
     ss >> command >> argument;
 
     std::stringstream output;
-    if (command == "afficher"){
+    if (command == "afficher" || command == "show"){
         output << "Recherche de " << argument << " : " << ";";
         if (argument == "groupes"){
             db.showAllGroupes(output);
@@ -264,12 +264,12 @@ int main(int argc, const char* argv[]){
         std::string outputStr = output.str();
         std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
         response = outputStr;
-    } else if (command == "jouer"){
+    } else if (command == "jouer" || command == "play"){
         output << "Recherche de " << argument << " : " << ";";
         db.playObjetMultimedia(argument, output);
         response = output.str();
     } else {
-        response = "Erreur : Commande inconnue";
+        response = "Erreur : Commande inconnue. Pour quitter, utilisez la commande quit";
     }
 
     // return false would close the connecytion with the client

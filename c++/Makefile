@@ -60,7 +60,7 @@ LDLIBS =
  
 all: ${SERVER} ${CLIENT}
 
-run-${SERVER}: ${SERVER}
+run: ${SERVER}
 	./${SERVER}
 
 run-${CLIENT}: ${CLIENT}
