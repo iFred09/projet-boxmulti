@@ -101,7 +101,8 @@ void Film::setChapitres(const int* chapitres, int nbChapitres){
     if (nbChapitres <= 0 || chapitres == nullptr){
         this->nbChapitres = 0;
         this->chapitres = nullptr;
-        return;
+        if (nbChapitres <= 0) throw NombreChapitresException();
+        throw NullChapitresException();
     }
     this->nbChapitres = nbChapitres;
     this->chapitres = new int[nbChapitres];

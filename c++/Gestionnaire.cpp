@@ -21,7 +21,8 @@
 std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const std::string filename){
     // std::shared_ptr<Photo> photo = std::make_shared<Photo>(name, filename);
     if (objetsMultimedia.find(name) != objetsMultimedia.end()){
-        return nullptr;
+        // si l'objet multimédia existe déjà, on lève une exception
+        throw NomDejaUtiliseException(name);
     }
     std::shared_ptr<Photo> photo(new Photo(name, filename));
     objetsMultimedia[name] = photo;
@@ -40,6 +41,10 @@ std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const s
 
 std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const std::string filename, const double latitude, const double longitude){
     // std::shared_ptr<Photo> photo = std::make_shared<Photo>(name, filename, latitude, longitude);
+    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+        // si l'objet multimédia existe déjà, on lève une exception
+        throw NomDejaUtiliseException(name);
+    }
     std::shared_ptr<Photo> photo(new Photo(name, filename, latitude, longitude));
     objetsMultimedia[name] = photo;
     return photo;
@@ -55,6 +60,10 @@ std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const s
 
 std::shared_ptr<Video> Gestionnaire::createVideo(const std::string name, const std::string filename){
     // std::shared_ptr<Video> video = std::make_shared<Video>(name, filename);
+    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+        // si l'objet multimédia existe déjà, on lève une exception
+        throw NomDejaUtiliseException(name);
+    }
     std::shared_ptr<Video> video(new Video(name, filename));
     objetsMultimedia[name] = video;
     return video;
@@ -71,6 +80,10 @@ std::shared_ptr<Video> Gestionnaire::createVideo(const std::string name, const s
 
 std::shared_ptr<Video> Gestionnaire::createVideo(const std::string name, const std::string filename, const int duration){
     // std::shared_ptr<Video> video = std::make_shared<Video>(name, filename, duration);
+    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+        // si l'objet multimédia existe déjà, on lève une exception
+        throw NomDejaUtiliseException(name);
+    }
     std::shared_ptr<Video> video(new Video(name, filename, duration));
     objetsMultimedia[name] = video;
     return video;
@@ -86,6 +99,10 @@ std::shared_ptr<Video> Gestionnaire::createVideo(const std::string name, const s
 
 std::shared_ptr<Film> Gestionnaire::createFilm(const std::string name, const std::string filename){
     // std::shared_ptr<Film> film = std::make_shared<Film>(name, filename);
+    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+        // si l'objet multimédia existe déjà, on lève une exception
+        throw NomDejaUtiliseException(name);
+    }
     std::shared_ptr<Film> film(new Film(name, filename));
     objetsMultimedia[name] = film;
     return film;
@@ -102,6 +119,10 @@ std::shared_ptr<Film> Gestionnaire::createFilm(const std::string name, const std
 
 std::shared_ptr<Film> Gestionnaire::createFilm(const std::string name, const std::string filename, const int duration){
     // std::shared_ptr<Film> film = std::make_shared<Film>(name, filename, duration);
+    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+        // si l'objet multimédia existe déjà, on lève une exception
+        throw NomDejaUtiliseException(name);
+    }
     std::shared_ptr<Film> film(new Film(name, filename, duration));
     objetsMultimedia[name] = film;
     return film;
@@ -116,6 +137,10 @@ std::shared_ptr<Film> Gestionnaire::createFilm(const std::string name, const std
 
 std::shared_ptr<Groupe> Gestionnaire::createGroupe(const std::string name){
     // std::shared_ptr<Groupe> groupe = std::make_shared<Groupe>(name);
+    if (groupes.find(name) != groupes.end()){
+        // si le groupe existe déjà, on lève une exception
+        throw NomDejaUtiliseException(name);
+    }
     std::shared_ptr<Groupe> groupe(new Groupe(name));
     groupes[name] = groupe;
     return groupe;
@@ -246,21 +271,33 @@ void Gestionnaire::load(const std::string filename){
                 std::string name;
                 std::getline(file, type);
                 if(type == "Photo"){
-                    std::shared_ptr<Photo> photo = createPhoto("","");
+                    std::shared_ptr<Photo> photo(new Photo("", ""));
                     photo->load(file);
                     name = photo->getName();
+                    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+                        // si l'objet multimédia existe déjà, on lève une exception
+                        throw NomDejaUtiliseException(name);
+                    }
                     objetsMultimedia[name] = photo;
                 }
                 else if(type == "Vidéo"){
-                    std::shared_ptr<Video> video = createVideo("", "");
+                    std::shared_ptr<Video> video(new Video("", ""));
                     video->load(file);
                     name = video->getName();
+                    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+                        // si l'objet multimédia existe déjà, on lève une exception
+                        throw NomDejaUtiliseException(name);
+                    }
                     objetsMultimedia[name] = video;
                 }
                 else if(type == "Film"){
-                    std::shared_ptr<Film> film = createFilm("", "");
+                    std::shared_ptr<Film> film(new Film("", ""));
                     film->load(file);
                     name = film->getName();
+                    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+                        // si l'objet multimédia existe déjà, on lève une exception
+                        throw NomDejaUtiliseException(name);
+                    }
                     objetsMultimedia[name] = film;
                 }
                 else{

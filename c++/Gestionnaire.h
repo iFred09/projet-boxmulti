@@ -12,6 +12,7 @@
 #ifndef GESTIONNAIRE_H
 #define GESTIONNAIRE_H
 
+#include <stdexcept>
 #include <map>
 #include "Base.h"
 #include "Photo.hpp"
@@ -176,6 +177,16 @@ class Gestionnaire{
          * @param name Nom du groupe
          */
         void deleteGroupe(const std::string name);
+};
+
+/**
+ * @brief Classe pour gérer les exceptions de nom déjà utilisé, dérivé de l'exception invalid_argument
+ * 
+ */
+
+class NomDejaUtiliseException : public std::invalid_argument{
+    public:
+        NomDejaUtiliseException(const std::string& name) : std::invalid_argument("Nom " + name + " déjà utilisé"){}
 };
 
 #endif
