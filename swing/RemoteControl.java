@@ -41,17 +41,15 @@ public class RemoteControl extends JFrame {
 
         JPanel panelBoutons = new JPanel();
         panelBoutons.add(button1 = new JButton("Se connecter au serveur"));
-        panelBoutons.add(button2 = new JButton("Rechercher un objet multimédia"));
-        panelBoutons.add(button3 = new JButton("Rechercher un groupe"));
-        panelBoutons.add(button4 = new JButton("Jouer un objet multimédia"));
-        panelBoutons.add(button5 = new JButton("Quitter"));
+        panelBoutons.add(button2 = new JButton("Rechercher un élément dans la base de données"));
+        panelBoutons.add(button3 = new JButton("Jouer un objet multimédia"));
+        panelBoutons.add(button4 = new JButton("Quitter"));
         add(panelBoutons, BorderLayout.SOUTH);
 
         button1.addActionListener(new ConnectListener());
-        button2.addActionListener(new SearchMultimediaListener());
-        button3.addActionListener(new SearchGroupListener());
-        button4.addActionListener(new PlayMultimediaListener());
-        button5.addActionListener(new QuitListener());
+        button2.addActionListener(new SearchListener());
+        button3.addActionListener(new PlayMultimediaListener());
+        button4.addActionListener(new QuitListener());
 
         setupMenuBar();
         setInteractionButtonsEnabled(false);
@@ -99,7 +97,6 @@ public class RemoteControl extends JFrame {
     private void setInteractionButtonsEnabled(boolean enabled) {
         button2.setEnabled(enabled);
         button3.setEnabled(enabled);
-        button4.setEnabled(enabled);
     }
 
     private void sendRequest(String request) {
@@ -141,15 +138,9 @@ public class RemoteControl extends JFrame {
         }
     }
 
-    class SearchMultimediaListener implements ActionListener {
+    class SearchListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            showInputDialog("Entrez le nom de l'objet multimédia :", "afficher");
-        }
-    }
-
-    class SearchGroupListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            showInputDialog("Entrez le nom du groupe :", "afficher");
+            showInputDialog("Entrez le nom de l'objet multimédia ou du groupe à rechercher :", "afficher");
         }
     }
 

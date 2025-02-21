@@ -352,8 +352,8 @@ int main(int argc, const char* argv[]){
             db.showAllObjetsMultimedia(output);
         }
         else{
-            db.showGroupes(argument, output);
             db.showObjetsMultimedia(argument, output);
+            db.showGroupes(argument, output);
         }
         std::string outputStr = output.str();
         std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
@@ -361,7 +361,9 @@ int main(int argc, const char* argv[]){
     } else if (command == "jouer" || command == "play"){
         output << "Recherche de " << argument << " : " << ";";
         db.playObjetMultimedia(argument, output);
-        response = output.str();
+        std::string outputStr;
+        std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
+        response = outputStr;
     } else if (command == "sauvegarder" || command == "save"){
         try{
             db.serialize(argument);
