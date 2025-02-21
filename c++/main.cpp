@@ -380,7 +380,7 @@ int main(int argc, const char* argv[]){
         response = "Chargement effectué";
     }
     else {
-        response = "Erreur : Commande inconnue";
+        response = "Erreur : Commande inconnue. Pour quitter, utilisez la commande quit";
     }
 
     // return false would close the connecytion with the client
