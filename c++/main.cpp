@@ -262,7 +262,7 @@ int main(int argc, const char* argv[]){
     ss >> command >> argument;
 
     std::stringstream output;
-    if (command == "afficher"){
+    if (command == "afficher" || command == "show"){
         output << "Recherche de " << argument << " : " << ";";
         if (argument == "groupes"){
             db.showAllGroupes(output);
@@ -277,7 +277,7 @@ int main(int argc, const char* argv[]){
         std::string outputStr = output.str();
         std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
         response = outputStr;
-    } else if (command == "jouer"){
+    } else if (command == "jouer" || command == "play"){
         output << "Recherche de " << argument << " : " << ";";
         db.playObjetMultimedia(argument, output);
         response = output.str();
