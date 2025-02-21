@@ -112,7 +112,7 @@ int main(int argc, const char* argv[])
 int main(int argc, const char* argv[]){
     std::cout << "Début du test gestionnaire" << std::endl;
 
-    Gestionnaire gestionnaire;
+    Gestionnaire gestionnaire = Gestionnaire::getInstance();
     std::shared_ptr<Photo> photo = gestionnaire.createPhoto("Vacances", "vacances.jpg", 43.5, 7.0);
     std::shared_ptr<Video> video = gestionnaire.createVideo("Video", "film.mp4", 120);
     std::shared_ptr<Groupe> groupe = gestionnaire.createGroupe("Vacances"); 
@@ -194,41 +194,54 @@ int main(int argc, const char* argv[]){
 
 #endif
 
-#define ETAPE_12
+// #define ETAPE_12
 #ifdef ETAPE_12
 
 int main(int argc, const char* argv[]){
     const int PORT = 3331;
 
-    Gestionnaire db;
+    Gestionnaire db = Gestionnaire::getInstance();
     try{
         std::shared_ptr<Photo> photo = db.createPhoto("Paris", "paris.jpg", 43.5, 7.0);
+        std::cout << "exception ?" << std::endl;
         std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.jpg", 99.9, 2.0);
         std::shared_ptr<Video> video = db.createVideo("unfilm", "film.mp4", 120);
         std::shared_ptr<Video> video2 = db.createVideo("unfilm2", "film2.mp4", 120);
         std::shared_ptr<Groupe> groupe = db.createGroupe("Vacances");
-
+        
+        int chapitres[15];
+        std::mt19937 gen(std::time(0)); // Mersenne Twister 19937 générateur
+        std::uniform_int_distribution<> dis(1, 100); // Nombres entiers entre 1 et 100
+        // génère 15 nombres aléatoires entre 1 et 100
+        for(int i=0 ; i<15 ; i++){
+            chapitres[i] = dis(gen);
+        }
+        std::shared_ptr<Film> film = db.createFilm("unvraifilm", "film.mp4", 120);
+        film->setChapitres(chapitres, 15);
+        
         groupe->push_back(photo);
         groupe->push_back(video);
 
-        db.serialize("db.txt");
+        db.serialize("db.txt");     // pas de sauvegarde de groupe (non implementee)
 
-        Gestionnaire db2;
-        db2.load("db.txt");
+        db.load("db.txt");
         
-        db2.showObjetsMultimedia("unfilm", std::cout);
+        db.showObjetsMultimedia("unvraifilm", std::cout);
 
     }
-    catch (NomDejaUtiliseException e){
+    catch (NomDejaUtiliseException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (NullChapitresException e){
+    catch (NullChapitresException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (NombreChapitresException e){
+    catch (NombreChapitresException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (std::exception e){
+    catch (InvalidPathException& e){
+        std::cerr << "Erreur : " << e.what() << std::endl;
+    }
+    catch (std::exception& e){
         std::cerr << "Erreur inconnue : " << e.what() << std::endl;
     }
 
@@ -269,6 +282,104 @@ int main(int argc, const char* argv[]){
         db.playObjetMultimedia(argument, output);
         response = output.str();
     } else {
+        response = "Erreur : Commande inconnue";
+    }
+
+    // return false would close the connecytion with the client
+    return true;
+    });
+    std::cout << "Starting Server on port " << PORT << std::endl;
+
+    int status = server->run(PORT);
+
+    // en cas d'erreur
+    if (status < 0) {
+        std::cerr << "Could not start Server on port " << PORT << std::endl;
+        return 1;
+    }
+
+    return 0;
+}
+
+#endif
+
+#define LAST_MAIN
+#ifdef LAST_MAIN
+
+int main(int argc, const char* argv[]){
+    const int PORT = 3331;
+
+    Gestionnaire db = Gestionnaire::getInstance();
+    try{
+        db.load("db.txt");
+    }
+    catch (NomDejaUtiliseException e){
+        std::cerr << "Erreur : " << e.what() << std::endl;
+    }
+    catch (NullChapitresException e){
+        std::cerr << "Erreur : " << e.what() << std::endl;
+    }
+    catch (NombreChapitresException e){
+        std::cerr << "Erreur : " << e.what() << std::endl;
+    }
+    catch (std::exception e){
+        std::cerr << "Erreur inconnue : " << e.what() << std::endl;
+    }
+
+    // creation TCPServer
+
+    auto* server =
+    new TCPServer( [&](std::string const& request, std::string& response) {
+
+    // the request sent by the client to the server
+    std::cout << "request: " << request << std::endl;
+
+    // processing request
+
+    std::stringstream ss(request);
+    std::string command;
+    std::string argument;
+
+    ss >> command >> argument;
+
+    std::stringstream output;
+    if (command == "afficher" || command == "show"){
+        output << "Recherche de " << argument << " : " << ";";
+        if (argument == "groupes"){
+            db.showAllGroupes(output);
+        } 
+        else if (argument == "multimédias"){
+            db.showAllObjetsMultimedia(output);
+        }
+        else{
+            db.showGroupes(argument, output);
+            db.showObjetsMultimedia(argument, output);
+        }
+        std::string outputStr = output.str();
+        std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
+        response = outputStr;
+    } else if (command == "jouer" || command == "play"){
+        output << "Recherche de " << argument << " : " << ";";
+        db.playObjetMultimedia(argument, output);
+        response = output.str();
+    } else if (command == "sauvegarder" || command == "save"){
+        try{
+            db.serialize(argument);
+        }
+        catch (InvalidPathException& e){
+            response = "Erreur : " + std::string(e.what());
+        }
+        response = "Sauvegarde effectuée à l'endroit : " + argument;
+    } else if (command == "charger" || command == "load"){
+        try{
+            db.load(argument);
+        }
+        catch (InvalidPathException& e){
+            response = "Erreur : " + std::string(e.what());
+        }
+        response = "Chargement effectué";
+    }
+    else {
         response = "Erreur : Commande inconnue";
     }
 

@@ -156,18 +156,21 @@ class Photo : public Base {
          */
 
         void load(std::ifstream &in) override{
-            std::string name;
-            std::string filename;
-            double latitude;
-            double longitude;
-            in >> name;
-            in >> filename;
-            in >> latitude;
-            in >> longitude;
-            this->setName(name);
-            this->setFileName(filename);
-            this->setLatitude(latitude);
-            this->setLongitude(longitude);
+            if (in.is_open()){
+                std::string name, filename, latitudeStr, longitudeStr;
+                double latitude;
+                double longitude;
+                std::getline(in, name);
+                std::getline(in, filename);
+                std::getline(in, latitudeStr);
+                std::getline(in, longitudeStr);
+                latitude = std::stod(latitudeStr);
+                longitude = std::stod(longitudeStr);
+                this->setName(name);
+                this->setFileName(filename);
+                this->setLatitude(latitude);
+                this->setLongitude(longitude);
+            }
         }
 };
 

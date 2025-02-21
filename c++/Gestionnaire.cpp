@@ -11,6 +11,18 @@
 
 #include "Gestionnaire.h"
 
+Gestionnaire Gestionnaire::instance;
+
+Gestionnaire::Gestionnaire(){
+    objetsMultimedia = new std::map<std::string, std::shared_ptr<Base>>();
+    groupes = new std::map<std::string, std::shared_ptr<Groupe>>();
+}
+
+Gestionnaire::~Gestionnaire(){
+    delete objetsMultimedia;
+    delete groupes;
+}
+
 /**
  * @brief Crée une photo et l'ajoute à la liste des objets multimédias
  * 
@@ -20,12 +32,12 @@
  */
 std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const std::string filename){
     // std::shared_ptr<Photo> photo = std::make_shared<Photo>(name, filename);
-    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
         // si l'objet multimédia existe déjà, on lève une exception
         throw NomDejaUtiliseException(name);
     }
     std::shared_ptr<Photo> photo(new Photo(name, filename));
-    objetsMultimedia[name] = photo;
+    (*objetsMultimedia)[name] = photo;
     return photo;
 }
 
@@ -41,12 +53,12 @@ std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const s
 
 std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const std::string filename, const double latitude, const double longitude){
     // std::shared_ptr<Photo> photo = std::make_shared<Photo>(name, filename, latitude, longitude);
-    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
         // si l'objet multimédia existe déjà, on lève une exception
         throw NomDejaUtiliseException(name);
     }
     std::shared_ptr<Photo> photo(new Photo(name, filename, latitude, longitude));
-    objetsMultimedia[name] = photo;
+    (*objetsMultimedia)[name] = photo;
     return photo;
 }
 
@@ -60,12 +72,12 @@ std::shared_ptr<Photo> Gestionnaire::createPhoto(const std::string name, const s
 
 std::shared_ptr<Video> Gestionnaire::createVideo(const std::string name, const std::string filename){
     // std::shared_ptr<Video> video = std::make_shared<Video>(name, filename);
-    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
         // si l'objet multimédia existe déjà, on lève une exception
         throw NomDejaUtiliseException(name);
     }
     std::shared_ptr<Video> video(new Video(name, filename));
-    objetsMultimedia[name] = video;
+    (*objetsMultimedia)[name] = video;
     return video;
 }
 
@@ -80,12 +92,12 @@ std::shared_ptr<Video> Gestionnaire::createVideo(const std::string name, const s
 
 std::shared_ptr<Video> Gestionnaire::createVideo(const std::string name, const std::string filename, const int duration){
     // std::shared_ptr<Video> video = std::make_shared<Video>(name, filename, duration);
-    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
         // si l'objet multimédia existe déjà, on lève une exception
         throw NomDejaUtiliseException(name);
     }
     std::shared_ptr<Video> video(new Video(name, filename, duration));
-    objetsMultimedia[name] = video;
+    (*objetsMultimedia)[name] = video;
     return video;
 }
 
@@ -99,12 +111,12 @@ std::shared_ptr<Video> Gestionnaire::createVideo(const std::string name, const s
 
 std::shared_ptr<Film> Gestionnaire::createFilm(const std::string name, const std::string filename){
     // std::shared_ptr<Film> film = std::make_shared<Film>(name, filename);
-    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
         // si l'objet multimédia existe déjà, on lève une exception
         throw NomDejaUtiliseException(name);
     }
     std::shared_ptr<Film> film(new Film(name, filename));
-    objetsMultimedia[name] = film;
+    (*objetsMultimedia)[name] = film;
     return film;
 }
 
@@ -119,12 +131,12 @@ std::shared_ptr<Film> Gestionnaire::createFilm(const std::string name, const std
 
 std::shared_ptr<Film> Gestionnaire::createFilm(const std::string name, const std::string filename, const int duration){
     // std::shared_ptr<Film> film = std::make_shared<Film>(name, filename, duration);
-    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
         // si l'objet multimédia existe déjà, on lève une exception
         throw NomDejaUtiliseException(name);
     }
     std::shared_ptr<Film> film(new Film(name, filename, duration));
-    objetsMultimedia[name] = film;
+    (*objetsMultimedia)[name] = film;
     return film;
 }
 
@@ -137,12 +149,12 @@ std::shared_ptr<Film> Gestionnaire::createFilm(const std::string name, const std
 
 std::shared_ptr<Groupe> Gestionnaire::createGroupe(const std::string name){
     // std::shared_ptr<Groupe> groupe = std::make_shared<Groupe>(name);
-    if (groupes.find(name) != groupes.end()){
+    if (groupes->find(name) != groupes->end()){
         // si le groupe existe déjà, on lève une exception
         throw NomDejaUtiliseException(name);
     }
     std::shared_ptr<Groupe> groupe(new Groupe(name));
-    groupes[name] = groupe;
+    (*groupes)[name] = groupe;
     return groupe;
 }
 
@@ -154,8 +166,8 @@ std::shared_ptr<Groupe> Gestionnaire::createGroupe(const std::string name){
  */
 
 std::shared_ptr<Base> Gestionnaire::getObjetMultimedia(const std::string name) const{
-    auto it = objetsMultimedia.find(name);
-    if (it != objetsMultimedia.end()){
+    auto it = objetsMultimedia->find(name);
+    if (it != objetsMultimedia->end()){
         return it->second;
     }
     return nullptr;
@@ -169,8 +181,8 @@ std::shared_ptr<Base> Gestionnaire::getObjetMultimedia(const std::string name) c
  */
 
 std::shared_ptr<Groupe> Gestionnaire::getGroupe(const std::string name) const{
-    auto it = groupes.find(name);
-    if (it != groupes.end()){
+    auto it = groupes->find(name);
+    if (it != groupes->end()){
         return it->second;
     }
     return nullptr;
@@ -239,10 +251,12 @@ void Gestionnaire::playObjetMultimedia(const std::string name, std::ostream &out
  */
 
 void Gestionnaire::serialize(const std::string filename) const{
+    if (Base::isValidPath(filename) == false){
+        throw InvalidPathException(filename);
+    }
     std::ofstream file(filename);
     if(file.is_open()){
-        for(const auto& obj : objetsMultimedia){
-            std::cout << "objet : " << obj.first << std::endl;
+        for(const auto& obj : *objetsMultimedia){
             file << "ObjetMultimedia" << std::endl;
             obj.second->serialize(file);
         }
@@ -262,8 +276,14 @@ void Gestionnaire::serialize(const std::string filename) const{
  */
 
 void Gestionnaire::load(const std::string filename){
+    if (Base::isValidPath(filename) == false){
+        throw InvalidPathException(filename);
+    }
     std::ifstream file(filename);
     if(file.is_open()){
+        // Suppression des objets multimédias et des groupes existants
+        objetsMultimedia->clear();
+        groupes->clear();
         std::string line;
         while(std::getline(file, line)){
             if(line == "ObjetMultimedia"){
@@ -274,31 +294,31 @@ void Gestionnaire::load(const std::string filename){
                     std::shared_ptr<Photo> photo(new Photo("", ""));
                     photo->load(file);
                     name = photo->getName();
-                    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+                    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
                         // si l'objet multimédia existe déjà, on lève une exception
                         throw NomDejaUtiliseException(name);
                     }
-                    objetsMultimedia[name] = photo;
+                    (*objetsMultimedia)[name] = photo;
                 }
                 else if(type == "Vidéo"){
                     std::shared_ptr<Video> video(new Video("", ""));
                     video->load(file);
                     name = video->getName();
-                    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+                    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
                         // si l'objet multimédia existe déjà, on lève une exception
                         throw NomDejaUtiliseException(name);
                     }
-                    objetsMultimedia[name] = video;
+                    (*objetsMultimedia)[name] = video;
                 }
                 else if(type == "Film"){
                     std::shared_ptr<Film> film(new Film("", ""));
                     film->load(file);
                     name = film->getName();
-                    if (objetsMultimedia.find(name) != objetsMultimedia.end()){
+                    if (objetsMultimedia->find(name) != objetsMultimedia->end()){
                         // si l'objet multimédia existe déjà, on lève une exception
                         throw NomDejaUtiliseException(name);
                     }
-                    objetsMultimedia[name] = film;
+                    (*objetsMultimedia)[name] = film;
                 }
                 else{
                     std::cerr << line << " : Type d'objet multimédia inconnu" << std::endl;
@@ -309,6 +329,9 @@ void Gestionnaire::load(const std::string filename){
         }
         file.close();
     }
+    else{
+        throw InvalidPathException(filename);
+    }
 }
 
 /**
@@ -318,12 +341,12 @@ void Gestionnaire::load(const std::string filename){
  */
 
 void Gestionnaire::showAllObjetsMultimedia(std::ostream &out) const{
-    if (objetsMultimedia.empty()){
+    if (objetsMultimedia->empty()){
         out << "Pas d'objets multimédias dans le serveur" << std::endl;
         return;
     }
     out << "Liste des objets multimédias : " << std::endl;
-    for(const auto& obj : objetsMultimedia){
+    for(const auto& obj : *objetsMultimedia){
         obj.second->printValues(out);
     }
 }
@@ -335,12 +358,12 @@ void Gestionnaire::showAllObjetsMultimedia(std::ostream &out) const{
  */
 
 void Gestionnaire::showAllGroupes(std::ostream &out) const{
-    if (groupes.empty()){
+    if (groupes->empty()){
         out << "Pas de groupes dans le serveur" << std::endl;
         return;
     }
     out << "Liste des groupes : " << std::endl;
-    for(const auto& groupe : groupes){
+    for(const auto& groupe : *groupes){
         groupe.second->printValues(out);
     }
 }
@@ -354,7 +377,7 @@ void Gestionnaire::showAllGroupes(std::ostream &out) const{
 void Gestionnaire::deleteObjetMultimedia(const std::string name){
     auto multimedia = this->getObjetMultimedia(name);
     if (multimedia){
-        objetsMultimedia.erase(name);
+        objetsMultimedia->erase(name);
     }
 }
 
@@ -367,6 +390,6 @@ void Gestionnaire::deleteObjetMultimedia(const std::string name){
 void Gestionnaire::deleteGroupe(const std::string name){
     auto groupe = this->getGroupe(name);
     if (groupe){
-        groupes.erase(name);
+        groupes->erase(name);
     }
 }

@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <regex>
 
 /**
  * @class Base
@@ -43,6 +44,14 @@ class Base{
          * @param filename Le nom du fichier contenant l'objet multimédia
          */
         Base(std::string name, std::string filename);
+        /**
+         * @brief Méthode pour vérifier si un chemin est valide
+         * 
+         * @param path Chemin à vérifier
+         * @return true Chemin valide
+         * @return false Chemin invalide (refuse les .. pour des raisons de sécurité évidentes)
+         */
+        static bool isValidPath(const std::string& path);
     public:
         /**
          * @brief Destructeur pour la classe Base
@@ -101,6 +110,11 @@ class Base{
          * @param in Flux d'entrée
          */
         virtual void load(std::ifstream &in) = 0;
+};
+
+class InvalidPathException : public std::invalid_argument{
+    public:
+        InvalidPathException(std::string path) : std::invalid_argument("Chemin invalide : " + path){}
 };
 
 #endif

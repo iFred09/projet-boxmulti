@@ -27,8 +27,14 @@
 
 class Gestionnaire{
     private:
-        std::map<std::string, std::shared_ptr<Base>> objetsMultimedia;  // Map des objets multimédias
-        std::map<std::string, std::shared_ptr<Groupe>> groupes;         // Map des groupes
+        std::map<std::string, std::shared_ptr<Base>> *objetsMultimedia;  // Map des objets multimédias
+        std::map<std::string, std::shared_ptr<Groupe>> *groupes;         // Map des groupes
+        static Gestionnaire instance;                                    // Instance unique du gestionnaire (pattern singleton)
+        /**
+         * @brief Constructeur par défaut de la classe Gestionnaire, privé pour le singleton
+         * 
+         */
+        Gestionnaire();
         /**
          * @brief Méthode pour obtenir un objet multimédia
          * 
@@ -44,6 +50,19 @@ class Gestionnaire{
          */
         std::shared_ptr<Groupe> getGroupe(const std::string name) const;
     public:
+        /**
+         * @brief Destructeur pour la classe Gestionnaire
+         * 
+         */
+        ~Gestionnaire();
+        /**
+         * @brief Méthode static pour obtenir l'instance unique du gestionnaire
+         * 
+         * @return Gestionnaire& Référence vers l'instance unique du gestionnaire
+         */
+        static Gestionnaire& getInstance(){
+            return instance;
+        }
         /**
          * @brief Crée une photo et l'ajoute à la liste des objets multimédias
          * 

@@ -134,9 +134,9 @@ void Film::printValues(std::ostream &out) const{
 
 void Film::serialize(std::ofstream &out) const{
     out << "Film" << std::endl;
-    out << getName() << std::endl;
-    out << getFileName() << std::endl;
-    out << getDuration() << std::endl;
+    out << this->getName() << std::endl;
+    out << this->getFileName() << std::endl;
+    out << this->getDuration() << std::endl;
     out << nbChapitres << std::endl;
     for(int i=0 ; i<nbChapitres ; i++){
         out << chapitres[i] << std::endl;
@@ -152,9 +152,21 @@ void Film::serialize(std::ofstream &out) const{
  */
 
 void Film::load(std::ifstream &in){
-    in >> nbChapitres;
+    Video::load(in);
+    std::string nbChapitresStr;
+    std::getline(in, nbChapitresStr);
+    int nbChapitres = std::stoi(nbChapitresStr);
+    delete[] chapitres;
+    if (nbChapitres < 0) throw NombreChapitresException();
+    if (nbChapitres == 0){
+        chapitres = nullptr;
+        return;
+    }
     chapitres = new int[nbChapitres];
+    this->nbChapitres = nbChapitres;
+    std::string chapitreStr;
     for(int i=0 ; i<nbChapitres ; i++){
-        in >> chapitres[i];
+        std::getline(in, chapitreStr);
+        chapitres[i] = std::stoi(chapitreStr);
     }
 }

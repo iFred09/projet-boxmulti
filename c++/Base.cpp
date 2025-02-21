@@ -30,7 +30,12 @@ Base::Base(){
 
 Base::Base(std::string name, std::string filename){
     this->name = name;
-    this->filename = filename;
+    if (isValidPath(filename)){
+        this->filename = filename;
+    }
+    else{
+        throw InvalidPathException(filename);
+    }
 }
 
 /**
@@ -40,6 +45,18 @@ Base::Base(std::string name, std::string filename){
 
 Base::~Base(){
     
+}
+
+/**
+* @brief Méthode pour vérifier si un chemin est valide
+* 
+* @param path Chemin à vérifier
+* @return true Chemin valide
+* @return false Chemin invalide (refuse les .. pour des raisons de sécurité évidentes)
+*/
+bool Base::isValidPath(const std::string& path){
+    std::regex pattern("^(?!.*(?:\\.{2}|~|\\$|\\?|\\*|\\|)).*$");
+    return std::regex_match(path, pattern);
 }
 
 /**

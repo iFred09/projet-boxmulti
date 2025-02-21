@@ -129,13 +129,12 @@ class Video : public Base{
          */
 
         void load(std::ifstream &in) override{
-            std::string type;
-            std::string name;
-            std::string filename;
+            std::string name, filename, durationStr;
             int duration;
             getline(in, name);
             getline(in, filename);
-            in >> duration;
+            getline(in, durationStr);
+            duration = std::stoi(durationStr);
             this->setName(name);
             this->setFileName(filename);
             this->setDuration(duration);
