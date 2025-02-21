@@ -313,16 +313,16 @@ int main(int argc, const char* argv[]){
     try{
         db.load("db.txt");
     }
-    catch (NomDejaUtiliseException e){
+    catch (NomDejaUtiliseException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (NullChapitresException e){
+    catch (NullChapitresException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (NombreChapitresException e){
+    catch (NombreChapitresException& e){
         std::cerr << "Erreur : " << e.what() << std::endl;
     }
-    catch (std::exception e){
+    catch (std::exception& e){
         std::cerr << "Erreur inconnue : " << e.what() << std::endl;
     }
 

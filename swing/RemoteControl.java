@@ -76,10 +76,10 @@ public class RemoteControl extends JFrame {
         menuFichier.add(quitItem);
 
         JMenu menuRecherche = new JMenu("Rechercher");
-        JMenuItem searchAllGroups = new JMenuItem("Rechercher tous les groupes");
         JMenuItem searchAllMultimedia = new JMenuItem("Rechercher tous les objets multimédias");
-        searchAllGroups.addActionListener(new GroupListener());
+        JMenuItem searchAllGroups = new JMenuItem("Rechercher tous les groupes");
         searchAllMultimedia.addActionListener(new MultimediaListener());
+        searchAllGroups.addActionListener(new GroupListener());
         menuRecherche.add(searchAllMultimedia);
         menuRecherche.add(searchAllGroups);
 
