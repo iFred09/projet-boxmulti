@@ -112,7 +112,16 @@ class Base{
         virtual void load(std::ifstream &in) = 0;
 };
 
+/**
+ * @class InvalidPathException
+ * @brief Classe d'exception pour les chemins invalides
+ * 
+ */
 class InvalidPathException : public std::invalid_argument{
+    /**
+     * @brief Constructeur de l'exception InvalidPathException
+     * 
+     */
     public:
         InvalidPathException(std::string path) : std::invalid_argument("Chemin invalide : " + path){}
 };

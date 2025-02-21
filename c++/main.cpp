@@ -373,14 +373,17 @@ int main(int argc, const char* argv[]){
     } else if (command == "charger" || command == "load"){
         try{
             db.load(argument);
+            response = "Chargement du fichier " + argument + " effectué";
         }
         catch (InvalidPathException& e){
             response = "Erreur : " + std::string(e.what());
         }
-        response = "Chargement effectué";
+        catch(FichierInexistantException& e){
+            response = "Erreur : " + std::string(e.what());
+        }
     }
     else {
-        response = "Erreur : Commande inconnue. Pour quitter, utilisez la commande quit";
+        response = "Erreur : Commande inconnue. Pour quitter, utilisez la commande quit.";
     }
 
     // return false would close the connecytion with the client

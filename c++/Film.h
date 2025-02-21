@@ -127,12 +127,32 @@ class Film : public Video{
         void load(std::ifstream& in) override;
 };
 
+/**
+ * @class NombreChapitresException
+ * @brief Exception pour le nombre de chapitres invalide
+ * 
+ */
+
 class NombreChapitresException : public std::invalid_argument{
+    /**
+     * @brief Constructeur de l'exception NombreChapitresException
+     * 
+     */
     public:
         NombreChapitresException() : std::invalid_argument("Erreur : Nombre de chapitres invalide"){}
 };
 
+/**
+ * @class NullChapitresException
+ * @brief Exception pour un tableau de chapitres nul
+ * 
+ */
+
 class NullChapitresException : public std::invalid_argument{
+    /**
+     * @brief Constructeur de l'exception NullChapitresException
+     * 
+     */
     public:
         NullChapitresException() : std::invalid_argument("Erreur : Tableau de chapitres nul"){}
 };

@@ -11,13 +11,22 @@
 
 #include "Gestionnaire.h"
 
-Gestionnaire Gestionnaire::instance;
+Gestionnaire Gestionnaire::instance;     // instance unique du gestionnaire
 
+/**
+ * @brief Constructeur par défaut de la classe Gestionnaire, privé pour le singleton
+ * 
+ */
 Gestionnaire::Gestionnaire(){
     objetsMultimedia = new std::map<std::string, std::shared_ptr<Base>>();
     groupes = new std::map<std::string, std::shared_ptr<Groupe>>();
 }
 
+
+/**
+ * @brief Destructeur de la classe Gestionnaire
+ * 
+ */
 Gestionnaire::~Gestionnaire(){
     delete objetsMultimedia;
     delete groupes;
@@ -330,7 +339,7 @@ void Gestionnaire::load(const std::string filename){
         file.close();
     }
     else{
-        throw InvalidPathException(filename);
+        throw FichierInexistantException(filename);
     }
 }
 

@@ -21,6 +21,7 @@
 #include "Groupe.h"
 
 /**
+ * @class Gestionnaire
  * @brief Classe pour gérer les objets multimédias et les groupes
  * 
  */
@@ -199,13 +200,31 @@ class Gestionnaire{
 };
 
 /**
- * @brief Classe pour gérer les exceptions de nom déjà utilisé, dérivé de l'exception invalid_argument
+ * @class NomDejaUtiliseException
+ * @brief Classe pour gérer les exceptions de nom déjà utilisé
  * 
  */
 
 class NomDejaUtiliseException : public std::invalid_argument{
+    /**
+     * @brief Constructeur de l'exception NomDejaUtiliseException
+     * 
+     */
     public:
         NomDejaUtiliseException(const std::string& name) : std::invalid_argument("Nom " + name + " déjà utilisé"){}
 };
+
+/**
+ * @class FichierInexistantException
+ * @brief Classe pour gérer les exceptions de noms de fichiers inexistants
+*/
+class FichierInexistantException : public std::invalid_argument {
+    /**
+     * @brief Constructeur de l'exception FichierInexistantException
+     * 
+     */
+    public:
+        FichierInexistantException(const std::string& filename) : std::invalid_argument("Fichier " + filename + " non trouvé dans le serveur"){}
+    };
 
 #endif
