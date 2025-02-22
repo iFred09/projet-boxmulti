@@ -136,7 +136,7 @@ int main(int argc, const char* argv[]){
 const int PORT = 3331;
 
 int main(int argc, const char* argv[]){
-    Gestionnaire db;
+    Gestionnaire db = Gestionnaire::getInstance();
     std::shared_ptr<Photo> photo = db.createPhoto("Paris", "paris.jpg", 43.5, 7.0);
     std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.jpg", 99.9, 2.0);
     std::shared_ptr<Video> video = db.createVideo("Film", "film.mp4", 120);
@@ -163,10 +163,25 @@ int main(int argc, const char* argv[]){
 
     std::cout << "searching for " << argument << std::endl;
     std::stringstream output;
-    if (command == "show"){
-        output << "Recherche de " << argument << " : " << ";";
-        db.showGroupes(argument, output);
-        db.showObjetsMultimedia(argument, output);
+    if (command == "affichermulti" || command == "showmulti"){
+        output << "Recherche de l'objet multimédia " << argument << " : " << ";";
+        if (argument == "all"){
+            db.showAllObjetsMultimedia(output);
+        }
+        else{
+            db.showObjetsMultimedia(argument, output);
+        }
+        std::string outputStr = output.str();
+        std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
+        response = outputStr;
+    } else if (command == "affichergrp" || command == "showgrp"){
+        output << "Recherche du groupe " << argument << " : " << ";";
+        if (argument == "all"){
+            db.showAllGroupes(output);
+        }
+        else{
+            db.showGroupes(argument, output);
+        }
         std::string outputStr = output.str();
         std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
         response = outputStr;
@@ -203,8 +218,7 @@ int main(int argc, const char* argv[]){
     Gestionnaire db = Gestionnaire::getInstance();
     try{
         std::shared_ptr<Photo> photo = db.createPhoto("Paris", "paris.jpg", 43.5, 7.0);
-        std::cout << "exception ?" << std::endl;
-        std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.jpg", 99.9, 2.0);
+        std::shared_ptr<Photo> photo2 = db.createPhoto("babar", "babar.png", 99.9, 2.0);
         std::shared_ptr<Video> video = db.createVideo("unfilm", "film.mp4", 120);
         std::shared_ptr<Video> video2 = db.createVideo("unfilm2", "film2.mp4", 120);
         std::shared_ptr<Groupe> groupe = db.createGroupe("Vacances");
@@ -262,17 +276,24 @@ int main(int argc, const char* argv[]){
     ss >> command >> argument;
 
     std::stringstream output;
-    if (command == "afficher" || command == "show"){
-        output << "Recherche de " << argument << " : " << ";";
-        if (argument == "groupes"){
-            db.showAllGroupes(output);
-        } 
-        else if (argument == "multimédias"){
+    if (command == "affichermulti" || command == "showmulti"){
+        output << "Recherche de l'objet multimédia " << argument << " : " << ";";
+        if (argument == "all"){
             db.showAllObjetsMultimedia(output);
         }
         else{
-            db.showGroupes(argument, output);
             db.showObjetsMultimedia(argument, output);
+        }
+        std::string outputStr = output.str();
+        std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
+        response = outputStr;
+    } else if (command == "affichergrp" || command == "showgrp"){
+        output << "Recherche du groupe " << argument << " : " << ";";
+        if (argument == "all"){
+            db.showAllGroupes(output);
+        }
+        else{
+            db.showGroupes(argument, output);
         }
         std::string outputStr = output.str();
         std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
@@ -343,16 +364,23 @@ int main(int argc, const char* argv[]){
     ss >> command >> argument;
 
     std::stringstream output;
-    if (command == "afficher" || command == "show"){
-        output << "Recherche de " << argument << " : " << ";";
-        if (argument == "groupes"){
-            db.showAllGroupes(output);
-        } 
-        else if (argument == "multimédias"){
+    if (command == "affichermulti" || command == "showmulti"){
+        output << "Recherche de l'objet multimédia " << argument << " : " << ";";
+        if (argument == "all"){
             db.showAllObjetsMultimedia(output);
         }
         else{
             db.showObjetsMultimedia(argument, output);
+        }
+        std::string outputStr = output.str();
+        std::replace(outputStr.begin(), outputStr.end(), '\n', ';');
+        response = outputStr;
+    } else if (command == "affichergrp" || command == "showgrp"){
+        output << "Recherche du groupe " << argument << " : " << ";";
+        if (argument == "all"){
+            db.showAllGroupes(output);
+        }
+        else{
             db.showGroupes(argument, output);
         }
         std::string outputStr = output.str();

@@ -21,44 +21,61 @@ import java.io.IOException;
 public class RemoteControl extends JFrame {
     private static final long serialVersionUID = 1L;
 
-    private JTextArea textArea;
-    private JButton button1, button2, button3, button4, button5;
+    private JTextArea textArea;                                 // zone de texte multi-lignes
+    private JButton button1, button2, button3, button4, button5;         // les cinq boutons de l'interface
 
-    private JMenuBar menuBar;
-    RemoteClient remoteClient = null;
+    private JMenuBar menuBar;                                   // menubar
+    RemoteClient remoteClient;                                  // Client
 
+    /**
+     * @brief Fonction main (programme) qui va lancer la télécommande
+     * @param args
+     */
     public static void main(String[] args) {
         new RemoteControl();
     }
+    
+    /**
+     * @brief Constructeur de la classe RemoteControl
+     */
 
     public RemoteControl() {
-        setTitle("Fenêtre Principale");
+        setTitle("Télécommande Swing");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Création de la zone de texte
         textArea = new JTextArea(20,30);
         textArea.setEditable(false);
         add(new JScrollPane(textArea), BorderLayout.CENTER);
 
+        // Création des boutons
         JPanel panelBoutons = new JPanel();
         panelBoutons.add(button1 = new JButton("Se connecter au serveur"));
-        panelBoutons.add(button2 = new JButton("Rechercher un élément dans la base de données"));
+        panelBoutons.add(button2 = new JButton("Rechercher un objet multimédia"));
         panelBoutons.add(button3 = new JButton("Jouer un objet multimédia"));
-        panelBoutons.add(button4 = new JButton("Quitter"));
+        panelBoutons.add(button4 = new JButton("Rechercher un groupe d'objets"));
+        panelBoutons.add(button5 = new JButton("Quitter"));
         add(panelBoutons, BorderLayout.SOUTH);
 
+        // Ajout des listeners aux boutons
         button1.addActionListener(new ConnectListener());
-        button2.addActionListener(new SearchListener());
+        button2.addActionListener(new SearchMultimediaListener());
         button3.addActionListener(new PlayMultimediaListener());
-        button4.addActionListener(new QuitListener());
+        button4.addActionListener(new SearchGroupListener());
+        button5.addActionListener(new QuitListener());
 
-        setupMenuBar();
-        setInteractionButtonsEnabled(false);
+        setupMenuBar();         // Création de la barre de menu
+        setInteractionButtonsEnabled(false);    // Désactiver les boutons 2 et 3 avant connexion
 
+        // Affichage de la fenêtre
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
+    /**
+     * @brief Création de la barre de menu
+     */
     private void setupMenuBar() {
         menuBar = new JMenuBar();
 
@@ -86,19 +103,30 @@ public class RemoteControl extends JFrame {
 
         setJMenuBar(menuBar);
     }
-
+    /**
+     * @brief Affiche une boîte de dialogue pour demander une entrée à l'utilisateur (pour les boutons de recherche et de lecture)
+     * @param message
+     * @param commandPrefix
+     */
     private void showInputDialog(String message, String commandPrefix) {
         String input = JOptionPane.showInputDialog(this, message);
         if (input != null && !input.trim().isEmpty()) {
             sendRequest(commandPrefix + " " + input);
         }
     }
-
+    /**
+     * @brief Activer ou désactiver les boutons de recherche et de lecture (après connexion/déconnexion)
+     * @param enabled
+     */
     private void setInteractionButtonsEnabled(boolean enabled) {
         button2.setEnabled(enabled);
         button3.setEnabled(enabled);
+        button4.setEnabled(enabled);
     }
-
+    /**
+     * @brief Envoie une requête au serveur et affiche la réponse dans la zone de texte
+     * @param request
+     */
     private void sendRequest(String request) {
         if (remoteClient == null) {
             textArea.append("RemoteClient non connecté.\n");
@@ -112,7 +140,9 @@ public class RemoteControl extends JFrame {
             textArea.append("Erreur de communication avec le serveur.\n");
         }
     }
-
+    /**
+     * @brief Classe interne pour gérer l'événement de connexion
+     */
     class ConnectListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
@@ -125,43 +155,65 @@ public class RemoteControl extends JFrame {
             }
         }
     }
-
+    /**
+     * @brief Classe interne pour gérer l'événement de recherche de tous les multimédias
+     */
     class MultimediaListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            sendRequest("afficher multimédias");
+            sendRequest("affichermulti all");
         }
     }
-
+    /**
+     * @brief Classe interne pour gérer l'événement de recherche de tous les groupes
+     */
     class GroupListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            sendRequest("afficher groupes");
+            sendRequest("affichergrp all");
         }
     }
-
-    class SearchListener implements ActionListener {
+    /**
+     * @brief Classe interne pour gérer l'événement de recherche d'un objet multimédia
+     */
+    class SearchMultimediaListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            showInputDialog("Entrez le nom de l'objet multimédia ou du groupe à rechercher :", "afficher");
+            showInputDialog("Entrez le nom de l'objet multimédia à rechercher :", "affichermulti");
         }
     }
-
+    /**
+     * @brief Classe interne pour gérer l'événement de recherche d'un groupe
+     */
+    class SearchGroupListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            showInputDialog("Entrez le nom du groupe d'objets à rechercher :", "affichergrp");
+        }
+    }
+    /**
+     * @brief Classe interne pour gérer l'événement de lecture
+     */
     class PlayMultimediaListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             showInputDialog("Entrez le nom de l'objet multimédia à jouer :", "play");
         }
     }
-
+    /**
+     * @brief Classe interne pour gérer l'événement de sauvegarde de la base de données
+     */
     class SaveDatabaseListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             showInputDialog("Entrez le chemin du fichier de sauvegarde :", "save");
         }
     }
-
+    /**
+     * @brief Classe interne pour gérer l'événement de chargement d'une nouvelle base de données
+     */
     class LoadDatabaseListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             showInputDialog("Entrez le chemin du fichier à charger :", "load");
         }
     }
-
+    /**
+     * @brief Classe interne pour gérer l'événement de quitter
+     */
     class QuitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
