@@ -142,6 +142,7 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class ConnectListener
      * @brief Classe interne pour gérer l'événement de connexion
      */
     class ConnectListener implements ActionListener {
@@ -157,6 +158,7 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class MultimediaListener
      * @brief Classe interne pour gérer l'événement de recherche de tous les multimédias
      */
     class MultimediaListener implements ActionListener {
@@ -165,6 +167,7 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class GroupListener
      * @brief Classe interne pour gérer l'événement de recherche de tous les groupes
      */
     class GroupListener implements ActionListener {
@@ -173,6 +176,7 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class SearchMultimediaListener
      * @brief Classe interne pour gérer l'événement de recherche d'un objet multimédia
      */
     class SearchMultimediaListener implements ActionListener {
@@ -181,6 +185,7 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class SearchGroupListener
      * @brief Classe interne pour gérer l'événement de recherche d'un groupe
      */
     class SearchGroupListener implements ActionListener {
@@ -189,6 +194,7 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class PlayMultimediaListener
      * @brief Classe interne pour gérer l'événement de lecture
      */
     class PlayMultimediaListener implements ActionListener {
@@ -197,6 +203,7 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class SaveDatabaseListener
      * @brief Classe interne pour gérer l'événement de sauvegarde de la base de données
      */
     class SaveDatabaseListener implements ActionListener {
@@ -205,6 +212,7 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class LoadDatabaseListener
      * @brief Classe interne pour gérer l'événement de chargement d'une nouvelle base de données
      */
     class LoadDatabaseListener implements ActionListener {
@@ -213,13 +221,14 @@ public class RemoteControl extends JFrame {
         }
     }
     /**
+     * @class QuitListener
      * @brief Classe interne pour gérer l'événement de quitter
      */
     class QuitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             try {
                 if (remoteClient != null) {
-                    remoteClient.send("quit");
+                    remoteClient.send("quit");      // commande quit ferme la connexion du client
                 }
             } finally {
                 System.exit(0);
