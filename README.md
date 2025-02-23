@@ -14,6 +14,8 @@ Pour compiler les fichiers, il suffit de lancer `make` dans un terminal de comma
 
 Pour l'exécution, vous pouvez lancer `make run` dans `cpp` pour lancer le serveur de set-top box multimédia et dans `swing` pour lancer la télécommande. Une interface client en ligne de commande est également disponible dans le dossier `cpp`, vous pouvez l'exécuter en tapant `make run-client`.
 
+ATTENTION : Les fichiers vidéos ne sont pas fournis. Vous pouvez modifier le main de sorte à pouvoir manipuler vos propres vidéos.
+
 ## Documentation
 
 Un `Doxyfile` est disponible à la racine du projet. Vous pouvez donc utiliser Doxygen pour générer la documentation du projet, en tapant `doxygen Doxyfile`.
